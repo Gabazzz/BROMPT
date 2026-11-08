@@ -436,7 +436,7 @@ body::before{
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path></svg>
       </button>
     </div>
-    <span class="brand__meta reveal" style="--d:1"><span class="count" data-target="120">120</span> prompts em <span class="count" data-target="10">10</span> categorias</span>
+    <span class="brand__meta reveal" style="--d:1"><span class="count" data-target="__TOTAL__">__TOTAL__</span> prompts em <span class="count" data-target="__CATCOUNT__">__CATCOUNT__</span> categorias</span>
     <nav class="nav reveal" style="--d:2">
       <span class="nav__indicator is-instant" aria-hidden="true"></span>
       <button class="nav__item is-active" data-view="catalogo" type="button">
@@ -1030,6 +1030,7 @@ requestAnimationFrame(()=>{ if(navIndicator) navIndicator.classList.remove('is-i
 '''
 
 html = TEMPLATE.replace('__PROMPTS__', json_data).replace('__CATEGORIES__', json_cats).replace('__ICONS__', json_icons)
+html = html.replace('__TOTAL__', str(len(data))).replace('__CATCOUNT__', str(len(cats)))
 
 with open(ROOT / 'index.html', 'w', encoding='utf-8') as f:
     f.write(html)
