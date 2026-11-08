@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340..760&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout: a card-catalog drawer — search flips through numbered index cards; picking one pulls its full card into a reading panel */
+/* Layout: a library catalog drawer — a left index card-drawer switches between the full shelf and today's pull list; picking a card opens it into a reading panel */
 :root{
   --bg:#17120d;
   --surface:#221a13;
@@ -69,41 +69,57 @@ body::before{
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
-.page{max-width:1040px;margin:0 auto;padding-block:48px 80px;position:relative;z-index:2;}
+.shell{max-width:1180px;margin:0 auto;padding-block:40px 80px;position:relative;z-index:2;display:flex;gap:40px;align-items:flex-start;}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:40px;}
+.sidebar{width:206px;flex:none;position:sticky;top:max(24px, calc(env(safe-area-inset-top,0px) + 12px));display:flex;flex-direction:column;gap:20px;}
+.sidebar__brandrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .brand{font-family:var(--font-display);font-weight:700;font-size:22px;letter-spacing:-0.01em;}
 .brand__dot{color:var(--accent);}
-.brand__meta{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.03em;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.brand__meta{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:.03em;font-variant-numeric:tabular-nums;}
 
 .theme-toggle{
   border:1px solid var(--line);background:var(--surface);color:var(--muted);
-  width:34px;height:34px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;
   cursor:pointer;flex:none;transition:color .15s ease,border-color .15s ease,transform .15s ease;
 }
 .theme-toggle:hover{color:var(--fg);border-color:var(--accent);}
 .theme-toggle:active{transform:scale(.92);}
 .theme-toggle svg{transition:transform .45s cubic-bezier(.34,1.56,.64,1);}
 .theme-toggle.is-spinning svg{transform:rotate(180deg);}
-.topbar__meta{display:flex;align-items:center;gap:14px;}
+
+.nav{display:flex;flex-direction:column;gap:4px;}
+.nav__item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:11px;border:1px solid transparent;
+  background:none;color:var(--muted);
+  font-family:var(--font-body);font-size:14px;font-weight:500;
+  cursor:pointer;text-align:left;width:100%;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.nav__item svg{flex:none;opacity:.85;}
+.nav__item:hover{color:var(--fg);}
+.nav__item.is-active{background:var(--surface);border-color:var(--line);color:var(--fg);}
+.nav__item.is-active svg{color:var(--accent);opacity:1;}
+
+.main{flex:1;min-width:0;}
 
 .hero{margin-bottom:36px;}
 .hero__title{
   font-family:var(--font-display);
   font-weight:600;
-  font-size:clamp(28px,5vw,46px);
-  line-height:1.08;
+  font-size:clamp(26px,4.2vw,42px);
+  line-height:1.1;
   letter-spacing:-0.015em;
   margin:0 0 14px;
-  max-width:16ch;
+  max-width:17ch;
   display:flex;flex-direction:column;
 }
 .reveal-line{display:block;}
 .reveal-accent{color:var(--accent);}
 .hero__sub{
-  font-size:16px;
+  font-size:15.5px;
   color:var(--muted);
-  max-width:46ch;
+  max-width:48ch;
   line-height:1.55;
   margin:0;
 }
@@ -184,37 +200,6 @@ body::before{
 .chip.is-active svg{color:var(--accent-fg);opacity:1;}
 .chip__count{font-family:var(--font-mono);font-size:11px;opacity:.75;font-variant-numeric:tabular-nums;}
 
-.today{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:24px;
-  margin-bottom:36px;
-}
-.today__head{
-  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;
-  margin-bottom:18px;
-}
-.today__eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px;}
-.today__title{font-family:var(--font-display);font-weight:600;font-size:clamp(20px,3vw,26px);margin:0;}
-.today__date{font-size:12.5px;color:var(--muted);}
-.today__shuffle{
-  flex:none;display:flex;align-items:center;gap:6px;
-  font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--fg);
-  background:var(--bg);border:1px solid var(--line);border-radius:999px;
-  padding:9px 15px;cursor:pointer;transition:border-color .15s ease, transform .1s ease;
-}
-.today__shuffle:hover{border-color:var(--accent);}
-.today__shuffle:active{transform:scale(.96);}
-.today__shuffle svg{transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
-.today__shuffle.is-spinning svg{transform:rotate(180deg);}
-.today__grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:12px;
-}
-.today__grid .card{background:var(--bg);}
-
 .results__head{
   display:flex;align-items:baseline;justify-content:space-between;
   margin:36px 0 16px;
@@ -225,7 +210,7 @@ body::before{
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
   gap:14px;
 }
 .card{
@@ -266,6 +251,38 @@ body::before{
 
 .footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);
   display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;color:var(--muted);font-size:12.5px;}
+
+/* Ideias de hoje view */
+.today-intro{margin-bottom:26px;}
+.today-intro__eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;}
+.today-intro__title{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.12;margin:0 0 12px;max-width:20ch;text-wrap:balance;}
+.today-intro__sub{font-size:15px;color:var(--muted);line-height:1.55;max-width:52ch;margin:0;}
+
+.productbar{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px;
+}
+.productbar__box{
+  flex:1 1 280px;min-width:0;display:flex;align-items:center;gap:10px;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:13px 16px;
+  transition:border-color .18s ease, box-shadow .18s ease;
+}
+.productbar__box:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);}
+.productbar__box svg{flex:none;color:var(--muted);}
+.productbar__box input{
+  flex:1;min-width:0;background:none;border:none;outline:none;
+  font-family:var(--font-body);font-size:15.5px;color:var(--fg);padding:2px 0;
+}
+.productbar__box input::placeholder{color:var(--muted);}
+.ideashuffle{
+  flex:none;display:flex;align-items:center;gap:7px;
+  font-family:var(--font-body);font-size:13.5px;font-weight:600;color:var(--fg);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;
+  padding:12px 17px;cursor:pointer;transition:border-color .15s ease, transform .1s ease;
+}
+.ideashuffle:hover{border-color:var(--accent);}
+.ideashuffle:active{transform:scale(.96);}
+.ideashuffle svg{transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.ideashuffle.is-spinning svg{transform:rotate(180deg);}
 
 /* overlay / detail panel */
 .overlay{
@@ -345,8 +362,13 @@ body::before{
 @keyframes cardIn{to{opacity:1;transform:none;}}
 @keyframes pop{0%{transform:scale(1);}45%{transform:scale(1.07);}100%{transform:scale(1);}}
 
-@media (max-width:640px){
-  .page{padding-block:32px 60px;}
+@media (max-width:880px){
+  .shell{flex-direction:column;gap:22px;padding-block:28px 60px;}
+  .sidebar{position:static;width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}
+  .sidebar__brandrow{flex:1 1 auto;}
+  .brand__meta{display:none;}
+  .nav{flex-direction:row;gap:8px;flex:1 1 100%;order:3;}
+  .nav__item{flex:1;justify-content:center;}
   .panel{width:100%;}
   .grid{grid-template-columns:1fr 1fr;}
 }
@@ -358,72 +380,92 @@ body::before{
 <script>try{if(window.matchMedia && matchMedia('(prefers-reduced-motion: no-preference)').matches){document.documentElement.classList.add('motion-ok');}}catch(e){}</script>
 <div class="grain" aria-hidden="true"></div>
 
-<div class="page">
-  <div class="topbar reveal" style="--d:0">
-    <span class="brand">Brompt<span class="brand__dot">.</span></span>
-    <div class="topbar__meta">
-      <span class="brand__meta"><span class="count" data-target="120">120</span> PROMPTS · <span class="count" data-target="10">10</span> CATEGORIAS</span>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sidebar__brandrow reveal" style="--d:0">
+      <span class="brand">Brompt<span class="brand__dot">.</span></span>
       <button class="theme-toggle" id="themeToggle" title="Alternar tema" aria-label="Alternar tema">
-        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path></svg>
       </button>
     </div>
-  </div>
+    <span class="brand__meta reveal" style="--d:1"><span class="count" data-target="120">120</span> PROMPTS · <span class="count" data-target="10">10</span> CATEGORIAS</span>
+    <nav class="nav reveal" style="--d:2">
+      <button class="nav__item is-active" data-view="catalogo" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+        <span>Catálogo</span>
+      </button>
+      <button class="nav__item" data-view="hoje" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path><circle cx="8.5" cy="14" r="1.3"></circle></svg>
+        <span>Ideias de hoje</span>
+      </button>
+    </nav>
+  </aside>
 
-  <header class="hero">
-    <h1 class="hero__title">
-      <span class="reveal-line" style="--d:1">Descreva o que</span>
-      <span class="reveal-line" style="--d:2">você quer criar.</span>
-      <span class="reveal-line reveal-accent" style="--d:3">A gente acha o</span>
-      <span class="reveal-line reveal-accent" style="--d:4">prompt certo.</span>
-    </h1>
-    <p class="hero__sub reveal" style="--d:5">Catálogo vivo de prompts de IA para quem vende e cria conteúdo no TikTok Shop — imagens, vídeos, automações, copy e estratégia.</p>
-  </header>
+  <main class="main">
+    <section id="view-catalogo">
+      <header class="hero">
+        <h1 class="hero__title">
+          <span class="reveal-line" style="--d:1">Descreva o que</span>
+          <span class="reveal-line" style="--d:2">você quer criar.</span>
+          <span class="reveal-line reveal-accent" style="--d:3">A gente acha o</span>
+          <span class="reveal-line reveal-accent" style="--d:4">prompt certo.</span>
+        </h1>
+        <p class="hero__sub reveal" style="--d:5">Catálogo vivo de prompts de IA para quem vende e cria conteúdo no TikTok Shop — imagens, vídeos, automações, copy e estratégia.</p>
+      </header>
 
-  <section class="today reveal" style="--d:6">
-    <div class="today__head">
-      <div>
-        <p class="today__eyebrow">Ideias de hoje</p>
-        <h2 class="today__title">5 prompts pra gravar agora</h2>
-        <span class="today__date" id="todayDate"></span>
+      <section class="search reveal" style="--d:6">
+        <div class="search__box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input id="searchInput" type="text" placeholder="Ex.: quero um depoimento em vídeo pra anúncio" autocomplete="off" aria-label="Buscar prompt">
+          <button class="search__clear" id="clearBtn" hidden aria-label="Limpar busca">×</button>
+        </div>
+        <div class="suggestions" id="suggestions" hidden></div>
+
+        <div class="quickrow reveal" id="quickrow" style="--d:7">
+          <span class="quickrow__label">Tente:</span>
+        </div>
+
+        <div class="chips reveal" id="chips" style="--d:8"></div>
+      </section>
+
+      <section class="results">
+        <div class="results__head reveal" style="--d:9">
+          <span class="results__count" id="resultsCount"></span>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="empty" id="empty" hidden>
+          <strong>Nenhum prompt encontrado</strong>
+          Tente outras palavras ou escolha uma categoria abaixo.
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Brompt · biblioteca de prompts com IA</span>
+        <span>Baseado em 120 Prompts Poderosos para Empreender com IA</span>
+      </footer>
+    </section>
+
+    <section id="view-hoje" hidden>
+      <div class="today-intro">
+        <p class="today-intro__eyebrow">Ideias de hoje</p>
+        <h1 class="today-intro__title">O que a modelo grava com o produto de hoje?</h1>
+        <p class="today-intro__sub">Diz qual produto entra no vídeo e a gente monta 5 jeitos da sua modelo de IA interagir com ele — segurando, vestindo, experimentando, de perto, de longe. É só colar no Google Flow.</p>
       </div>
-      <button class="today__shuffle" id="todayShuffle" type="button">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-        <span>Quero outras 5</span>
-      </button>
-    </div>
-    <div class="today__grid" id="todayGrid"></div>
-  </section>
 
-  <section class="search reveal" style="--d:7">
-    <div class="search__box">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input id="searchInput" type="text" placeholder="Ex.: quero um depoimento em vídeo pra anúncio" autocomplete="off" aria-label="Buscar prompt">
-      <button class="search__clear" id="clearBtn" hidden aria-label="Limpar busca">×</button>
-    </div>
-    <div class="suggestions" id="suggestions" hidden></div>
+      <div class="productbar">
+        <label class="productbar__box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.59 3.17H4a1 1 0 0 0-1 1v5.59a2 2 0 0 0 .59 1.41l9.59 9.58a2 2 0 0 0 2.82 0l4.59-4.59a2 2 0 0 0 0-2.58z"></path><circle cx="7.5" cy="7.5" r="1.1"></circle></svg>
+          <input id="productInput" type="text" placeholder="Qual produto vai aparecer no vídeo hoje? Ex.: tênis branco" autocomplete="off" aria-label="Produto de hoje">
+        </label>
+        <button class="ideashuffle" id="ideaShuffle" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          <span>Quero outras 5</span>
+        </button>
+      </div>
 
-    <div class="quickrow reveal" id="quickrow" style="--d:8">
-      <span class="quickrow__label">Tente:</span>
-    </div>
-
-    <div class="chips reveal" id="chips" style="--d:9"></div>
-  </section>
-
-  <section class="results">
-    <div class="results__head reveal" style="--d:10">
-      <span class="results__count" id="resultsCount"></span>
-    </div>
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="empty" hidden>
-      <strong>Nenhum prompt encontrado</strong>
-      Tente outras palavras ou escolha uma categoria abaixo.
-    </div>
-  </section>
-
-  <footer class="footer">
-    <span>Brompt · biblioteca de prompts com IA</span>
-    <span>Baseado em 120 Prompts Poderosos para Empreender com IA</span>
-  </footer>
+      <div class="grid" id="ideaGrid"></div>
+    </section>
+  </main>
 </div>
 
 <div class="overlay" id="overlay" hidden>
@@ -451,7 +493,6 @@ const ICONS = {
   arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>'
 };
 const CAT_ICON = {"imagens": "img", "videos": "play", "tiktok-shop": "tag", "negocios": "spark", "renda-extra": "coin", "marketing": "megaphone", "viral": "bolt", "automacao": "gear", "iniciantes": "seed", "avancado": "compass"};
-const DAILY_SLUGS = ["imagens", "videos", "viral"];
 
 const SYN = {
   foto:'imagem', fotos:'imagem', imagens:'imagem', imagem:'imagem',
@@ -479,6 +520,9 @@ const SYN = {
 
 function normalize(s){
   return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+}
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 function expand(tokens){
   const out = new Set();
@@ -545,14 +589,23 @@ const els = {
   panel: document.getElementById('panel'),
   panelContent: document.getElementById('panelContent'),
   closeBtn: document.getElementById('closeBtn'),
-  todayGrid: document.getElementById('todayGrid'),
-  todayDate: document.getElementById('todayDate'),
-  todayShuffle: document.getElementById('todayShuffle'),
+  ideaGrid: document.getElementById('ideaGrid'),
+  ideaShuffle: document.getElementById('ideaShuffle'),
+  productInput: document.getElementById('productInput'),
 };
 
 function iconSvg(slug, size){
   size = size || 14;
-  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[CAT_ICON[slug]]||'')+'</svg>';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[CAT_ICON[slug]]||ICONS[slug]||'')+'</svg>';
+}
+
+function attachCardHover(c){
+  if(!MOTION_OK) return;
+  c.addEventListener('pointermove', e=>{
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', (e.clientX-r.left)+'px');
+    c.style.setProperty('--my', (e.clientY-r.top)+'px');
+  });
 }
 
 function renderChips(){
@@ -593,65 +646,6 @@ function renderQuick(){
   });
 }
 
-function mulberry32(seed){
-  return function(){
-    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function seededShuffle(arr, rand){
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(rand()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
-}
-function dateSeed(d){
-  const key = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
-  let h = 0;
-  String(key).split('').forEach(ch=>{ h = (h*31 + ch.charCodeAt(0)) | 0; });
-  return h;
-}
-const dailyPool = PROMPTS.filter(p=>DAILY_SLUGS.includes(p.categoria_slug));
-let todayShown = [];
-
-function pickToday(seed){
-  const rand = mulberry32(seed);
-  const shuffled = seededShuffle(dailyPool, rand);
-  return shuffled.slice(0,5);
-}
-function renderToday(list){
-  todayShown = list;
-  els.todayGrid.innerHTML = list.map((p,i)=>cardHtml(p,i)).join('');
-  els.todayGrid.querySelectorAll('.card').forEach(c=>{
-    c.addEventListener('click', ()=>openDetail(c.getAttribute('data-id')));
-    if(MOTION_OK){
-      c.addEventListener('pointermove', e=>{
-        const r = c.getBoundingClientRect();
-        c.style.setProperty('--mx', (e.clientX-r.left)+'px');
-        c.style.setProperty('--my', (e.clientY-r.top)+'px');
-      });
-    }
-  });
-}
-function initToday(){
-  const now = new Date();
-  els.todayDate.textContent = now.toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'});
-  renderToday(pickToday(dateSeed(now)));
-}
-els.todayShuffle.addEventListener('click', ()=>{
-  const others = dailyPool.filter(p=>!todayShown.some(s=>s.id===p.id));
-  const pool = others.length>=5 ? others : dailyPool;
-  renderToday(seededShuffle(pool, Math.random).slice(0,5));
-  if(MOTION_OK){
-    els.todayShuffle.classList.add('is-spinning');
-    setTimeout(()=>els.todayShuffle.classList.remove('is-spinning'), 450);
-  }
-});
-
 function cardHtml(p, i){
   return '<button class="card" data-id="'+p.id+'" style="--i:'+i+'">'+
     '<div class="card__top"><span class="card__id">#'+p.id+'</span><span class="card__cat">'+p.categoria+'</span></div>'+
@@ -673,13 +667,7 @@ function renderGrid(list){
   els.grid.innerHTML = list.map(cardHtml).join('');
   els.grid.querySelectorAll('.card').forEach(c=>{
     c.addEventListener('click', ()=>openDetail(c.getAttribute('data-id')));
-    if(MOTION_OK){
-      c.addEventListener('pointermove', e=>{
-        const r = c.getBoundingClientRect();
-        c.style.setProperty('--mx', (e.clientX-r.left)+'px');
-        c.style.setProperty('--my', (e.clientY-r.top)+'px');
-      });
-    }
+    attachCardHover(c);
   });
   const base = currentQuery.trim() || activeCategory ? list.length+' '+(list.length===1?'prompt encontrado':'prompts encontrados') : 'Mostrando todos os '+list.length+' prompts';
   els.count.textContent = base;
@@ -717,28 +705,26 @@ function hideSuggestions(){
   setTimeout(()=>{ els.suggestions.hidden = true; els.suggestions.innerHTML=''; }, 160);
 }
 
-function openDetail(id){
-  const p = PROMPTS.find(x=>x.id===id);
-  if(!p) return;
+function openDetailObj(p){
   els.panelContent.innerHTML =
-    '<p class="panel__eyebrow">'+iconSvg(p.categoria_slug,12)+'<span>'+p.categoria+' · #'+p.id+'</span></p>'+
-    '<h2 class="panel__title">'+p.titulo+'</h2>'+
+    '<p class="panel__eyebrow">'+iconSvg(p.categoria_slug,12)+'<span>'+escapeHtml(p.categoria)+(p.id?' · #'+p.id:'')+'</span></p>'+
+    '<h2 class="panel__title">'+escapeHtml(p.titulo)+'</h2>'+
     '<div class="preview">'+
       '<div class="preview__label">'+iconSvg('spark',14)+'<span>Prévia do que você recebe</span></div>'+
-      '<p class="preview__result">'+p.resultado_esperado+'</p>'+
-      '<p class="preview__example"><b>Exemplo de uso: </b>'+p.exemplo_resultado+'</p>'+
+      '<p class="preview__result">'+escapeHtml(p.resultado_esperado)+'</p>'+
+      '<p class="preview__example"><b>Exemplo de uso: </b>'+escapeHtml(p.exemplo_resultado)+'</p>'+
     '</div>'+
     '<div class="section">'+
       '<p class="section__label">Para que serve</p>'+
-      '<p class="section__text">'+p.para_que_serve+'</p>'+
+      '<p class="section__text">'+escapeHtml(p.para_que_serve)+'</p>'+
     '</div>'+
     '<div class="section">'+
       '<p class="section__label">Prompt completo</p>'+
-      '<div class="promptbox"><pre id="promptText">'+p.prompt+'</pre><button class="copybtn" id="copyBtn">Copiar</button></div>'+
+      '<div class="promptbox"><pre id="promptText">'+escapeHtml(p.prompt)+'</pre><button class="copybtn" id="copyBtn">Copiar</button></div>'+
     '</div>'+
     '<div class="section">'+
       '<p class="section__label">Como usar</p>'+
-      '<p class="section__text">'+p.como_usar+'</p>'+
+      '<p class="section__text">'+escapeHtml(p.como_usar)+'</p>'+
     '</div>';
 
   const copyBtn = document.getElementById('copyBtn');
@@ -760,6 +746,10 @@ function openDetail(id){
   els.panel.scrollTop = 0;
   document.body.style.overflow = 'hidden';
   requestAnimationFrame(()=>els.overlay.classList.add('is-open'));
+}
+function openDetail(id){
+  const p = PROMPTS.find(x=>x.id===id);
+  if(p) openDetailObj(p);
 }
 function fallbackCopy(text, cb){
   const ta = document.createElement('textarea');
@@ -838,9 +828,125 @@ function runCountUp(){
   });
 }
 
+/* ---- view switching (left nav) ---- */
+const VIEWS = {
+  catalogo: document.getElementById('view-catalogo'),
+  hoje: document.getElementById('view-hoje'),
+};
+function setView(name){
+  if(!VIEWS[name]) name = 'catalogo';
+  Object.keys(VIEWS).forEach(k=>{ VIEWS[k].hidden = k!==name; });
+  document.querySelectorAll('.nav__item').forEach(b=>b.classList.toggle('is-active', b.getAttribute('data-view')===name));
+  if(location.hash.slice(1)!==name){ history.replaceState(null,'','#'+name); }
+}
+document.querySelectorAll('.nav__item').forEach(b=>{
+  b.addEventListener('click', ()=>setView(b.getAttribute('data-view')));
+});
+window.addEventListener('hashchange', ()=>setView(location.hash.slice(1)));
+
+/* ---- ideias de hoje: gerador de prompt de vídeo com produto ---- */
+const IDEA_TEMPLATES = [
+  {id:'segura', acao:'Segurando e observando', preview:'Vídeo curto da modelo segurando o produto e mostrando os detalhes de perto.',
+   prompt:"VEO 3: AI model holds the {PRODUTO} close to the camera, turning it slowly to show every angle, soft admiring expression, warm natural lighting, lifestyle photography feel, 8 seconds.",
+   dica:'Boa abertura de vídeo — use nos primeiros segundos pra prender a atenção antes de falar o preço ou benefício.'},
+  {id:'textura', acao:'Passando a mão / sentindo a textura', preview:'Close-up da mão da modelo passando pelo produto, destacando o material e a sensação de qualidade.',
+   prompt:"VEO 3: Close-up of the AI model's hand gently running fingers over the {PRODUTO}, feeling the texture, slow and sensory movement, soft focus background, satisfying tactile feel, natural light.",
+   dica:'Funciona bem como corte de transição no meio do vídeo, enquanto a legenda fala do material ou acabamento.'},
+  {id:'veste', acao:'Vestindo / experimentando', preview:'A modelo veste ou experimenta o produto na frente da câmera, com reação natural.',
+   prompt:"VEO 3: AI model puts on the {PRODUTO}, adjusts it naturally in front of a mirror, confident smile, casual home or studio setting, candid lifestyle feel, medium shot.",
+   dica:'Ideal pra roupas, calçados e acessórios — mostra como o produto fica no corpo real.'},
+  {id:'unboxing', acao:'Unboxing', preview:'A modelo abre a caixa do produto na câmera, com reação de surpresa no reveal.',
+   prompt:"VEO 3: AI model opens the box of the {PRODUTO} on camera, excited reaction, slow reveal, soft overhead lighting, clean desk or table setup, satisfying unboxing feel.",
+   dica:'Vídeo clássico que viraliza sozinho — funciona pra quase qualquer categoria de produto.'},
+  {id:'giro', acao:'Giro 360°', preview:'A modelo gira lentamente segurando ou vestindo o produto, mostrando todos os ângulos.',
+   prompt:"VEO 3: AI model wearing or holding the {PRODUTO} does a slow 360-degree turn in front of the camera, natural studio lighting, confident posture, clean minimal background.",
+   dica:'Ótimo pra fechar o vídeo mostrando o produto por inteiro antes do CTA de compra.'},
+  {id:'detalhe', acao:'Detalhe em movimento', preview:'Câmera bem próxima do produto enquanto as mãos da modelo se movem sobre ele, mostrando acabamento e qualidade.',
+   prompt:"VEO 3: Extreme close-up on the {PRODUTO} as the AI model's hands move slowly across it, showing fine details and material quality, shallow depth of field, soft directional light.",
+   dica:'Use quando o diferencial do produto está no acabamento, textura ou detalhe que de longe não aparece.'},
+  {id:'antesdepois', acao:'Antes e depois usando', preview:'Tela dividida: de um lado a modelo sem o produto, do outro já usando — mostrando a diferença.',
+   prompt:"VEO 3: Split screen, left: AI model without the {PRODUTO}, right: same model using or wearing the {PRODUTO}, confident transformation, same lighting and angle on both sides.",
+   dica:'Prompt forte pra produto de transformação (beleza, styling, acessório que muda o visual).'},
+  {id:'recomenda', acao:'Recomendando pra câmera', preview:'A modelo segura o produto de frente pra câmera e fala com entusiasmo direto pro espectador, estilo depoimento.',
+   prompt:"VEO 3: AI model holds up the {PRODUTO} towards the camera, speaks enthusiastically straight to the lens about why she loves it, natural handheld camera feel, authentic UGC style.",
+   dica:'Combine com uma legenda de dor/solução — funciona como o "rosto" do anúncio.'},
+  {id:'diaadia', acao:'No dia a dia', preview:'A modelo usa o produto naturalmente numa cena do cotidiano, sem parecer um anúncio.',
+   prompt:"VEO 3: AI model using the {PRODUTO} naturally during an everyday routine (getting ready, walking, at a cafe), candid motion, soft golden hour light, realistic UGC feel.",
+   dica:'O estilo que mais engaja no TikTok Shop — parece conteúdo orgânico, não propaganda.'},
+  {id:'reacao', acao:'Reação de close no rosto', preview:'Close no rosto da modelo sorrindo genuinamente enquanto segura o produto ao lado do rosto.',
+   prompt:"VEO 3: AI model's face lights up with a genuine smile while holding the {PRODUTO} next to her face, warm lighting, shallow depth of field, authentic reaction shot.",
+   dica:'Bom gancho emocional — usa a expressão da modelo pra vender a sensação, não só o produto.'}
+];
+
+function seededShuffle(arr, rand){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(rand()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function currentProduct(){
+  const v = (els.productInput.value||'').trim();
+  return v || '[PRODUTO]';
+}
+function fillTemplate(tpl, product){
+  return tpl.split('{PRODUTO}').join(product);
+}
+let todayPicks = [];
+function pickIdeas(n, excludeIds){
+  excludeIds = excludeIds || [];
+  const pool = IDEA_TEMPLATES.filter(t=>!excludeIds.includes(t.id));
+  const base = pool.length>=n ? pool : IDEA_TEMPLATES;
+  return seededShuffle(base, Math.random).slice(0,n);
+}
+function ideaCardHtml(t, product, i){
+  return '<button class="card" data-i="'+i+'" style="--i:'+i+'">'+
+    '<div class="card__top"><span class="card__id">IDEIA '+(i+1)+'</span><span class="card__cat">VÍDEO · TIKTOK SHOP</span></div>'+
+    '<h3 class="card__title">'+escapeHtml(t.acao)+'</h3>'+
+    '<p class="card__desc">'+escapeHtml(t.preview)+'</p>'+
+    '<span class="card__foot">Ver prompt '+iconSvg('arrow',13)+'</span>'+
+  '</button>';
+}
+function renderIdeas(){
+  const product = currentProduct();
+  els.ideaGrid.innerHTML = todayPicks.map((t,i)=>ideaCardHtml(t, product, i)).join('');
+  els.ideaGrid.querySelectorAll('.card').forEach((c,i)=>{
+    c.addEventListener('click', ()=>{
+      const t = todayPicks[i];
+      openDetailObj({
+        categoria:'Vídeo pra TikTok Shop',
+        categoria_slug:'videos',
+        id:null,
+        titulo:t.acao,
+        resultado_esperado:t.preview,
+        exemplo_resultado:'Cole no Google Flow com a sua modelo de IA já configurada e grave direto.',
+        para_que_serve:'Ideia de vídeo pronta pra gravar hoje com o produto que você está divulgando.',
+        prompt:fillTemplate(t.prompt, product),
+        como_usar:t.dica,
+      });
+    });
+    attachCardHover(c);
+  });
+}
+function initIdeas(){
+  todayPicks = pickIdeas(5);
+  renderIdeas();
+}
+els.productInput.addEventListener('input', renderIdeas);
+els.ideaShuffle.addEventListener('click', ()=>{
+  todayPicks = pickIdeas(5, todayPicks.map(t=>t.id));
+  renderIdeas();
+  if(MOTION_OK){
+    els.ideaShuffle.classList.add('is-spinning');
+    setTimeout(()=>els.ideaShuffle.classList.remove('is-spinning'), 450);
+  }
+});
+
 renderQuick();
 renderChips();
 renderGrid(PROMPTS);
 runCountUp();
-initToday();
+initIdeas();
+setView(location.hash.slice(1) || 'catalogo');
 </script>
