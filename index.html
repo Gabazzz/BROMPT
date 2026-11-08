@@ -4,15 +4,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340..760&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout: a library catalog drawer — a left index card-drawer switches between the full shelf and today's pull list; picking a card opens it into a reading panel */
+/* Layout: a library catalog drawer — a left index card-drawer switches between the full shelf and today's pull list; picking a card opens it into a reading panel.
+   Identity: a catalog ledger, not a SaaS dashboard — ink-plum paper, brass stamp accent, serif captions standing in for the usual tracked-uppercase eyebrow. */
 :root{
-  --bg:#17120d;
-  --surface:#221a13;
-  --fg:#f3ece1;
-  --muted:#a89a8a;
-  --accent:#ff5a36;
-  --accent-fg:#1c0800;
-  --line:#3a2d20;
+  --bg:#171023;
+  --surface:#20182f;
+  --fg:#f1ece0;
+  --muted:#9c8fac;
+  --accent:#d99a3b;
+  --accent-fg:#241400;
+  --line:#352a48;
 
   --font-display:'Fraunces',Georgia,serif;
   --font-body:'Work Sans',system-ui,-apple-system,sans-serif;
@@ -21,24 +22,24 @@
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
-    --bg:#f5efe3;
-    --surface:#fffdf8;
-    --fg:#201810;
-    --muted:#6e6050;
-    --accent:#d94c21;
-    --accent-fg:#fff6ef;
-    --line:#e3d7c3;
+    --bg:#f3ede0;
+    --surface:#fffaf0;
+    --fg:#241a33;
+    --muted:#746a82;
+    --accent:#a8671c;
+    --accent-fg:#fff6e8;
+    --line:#e2d6bd;
     color-scheme:light;
   }
 }
 :root[data-theme="light"]{
-  --bg:#f5efe3;
-  --surface:#fffdf8;
-  --fg:#201810;
-  --muted:#6e6050;
-  --accent:#d94c21;
-  --accent-fg:#fff6ef;
-  --line:#e3d7c3;
+  --bg:#f3ede0;
+  --surface:#fffaf0;
+  --fg:#241a33;
+  --muted:#746a82;
+  --accent:#a8671c;
+  --accent-fg:#fff6e8;
+  --line:#e2d6bd;
   color-scheme:light;
 }
 
@@ -75,7 +76,7 @@ body::before{
 .sidebar__brandrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .brand{font-family:var(--font-display);font-weight:700;font-size:22px;letter-spacing:-0.01em;}
 .brand__dot{color:var(--accent);}
-.brand__meta{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:.03em;font-variant-numeric:tabular-nums;}
+.brand__meta{font-family:var(--font-display);font-style:italic;font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
 
 .theme-toggle{
   border:1px solid var(--line);background:var(--surface);color:var(--muted);
@@ -171,7 +172,7 @@ body::before{
 }
 .suggestions__item:last-child{border-bottom:none;}
 .suggestions__item:hover,.suggestions__item.is-active{background:var(--bg);}
-.suggestions__id{font-family:var(--font-mono);font-size:11px;color:var(--accent);flex:none;}
+.suggestions__id{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);flex:none;}
 .suggestions__title{font-weight:600;font-size:14.5px;flex:none;}
 .suggestions__cat{font-size:12.5px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
@@ -198,7 +199,7 @@ body::before{
 .chip:active{transform:scale(.96);}
 .chip.is-active{background:var(--accent);border-color:var(--accent);color:var(--accent-fg);}
 .chip.is-active svg{color:var(--accent-fg);opacity:1;}
-.chip__count{font-family:var(--font-mono);font-size:11px;opacity:.75;font-variant-numeric:tabular-nums;}
+.chip__count{font-size:12px;opacity:.75;font-variant-numeric:tabular-nums;}
 
 .results__head{
   display:flex;align-items:baseline;justify-content:space-between;
@@ -206,7 +207,7 @@ body::before{
   padding-bottom:10px;
   border-bottom:1px solid var(--line);
 }
-.results__count{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);letter-spacing:.02em;font-variant-numeric:tabular-nums;}
+.results__count{font-family:var(--font-display);font-style:italic;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;}
 
 .grid{
   display:grid;
@@ -217,31 +218,24 @@ body::before{
   text-align:left;
   background:var(--surface);
   border:1px solid var(--line);
-  border-radius:16px;
-  padding:18px;
+  border-left:3px solid var(--line);
+  border-radius:3px 13px 3px 3px;
+  padding:17px 18px;
   cursor:pointer;
   font-family:inherit;color:inherit;
   display:flex;flex-direction:column;gap:10px;
-  min-width:0;position:relative;overflow:hidden;
-  transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  min-width:0;position:relative;
+  transition:border-color .18s ease, transform .18s ease;
 }
-.card::after{
-  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
-  background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%), color-mix(in srgb, var(--accent) 16%, transparent), transparent 62%);
-  opacity:0;transition:opacity .25s ease;
-}
-.card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 16px 32px -20px rgba(0,0,0,.5);}
-.card:hover::after{opacity:1;}
-.card:active{transform:translateY(-1px);}
+.card:hover{border-color:var(--accent);transform:translateX(3px);}
+.card:active{transform:translateX(1px);}
 .card__top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.card__id{font-family:var(--font-mono);font-size:11px;color:var(--accent);}
-.card__cat{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
-.card__title{font-family:var(--font-display);font-weight:600;font-size:18px;line-height:1.22;margin:0;}
+.card__id{font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:2px 6px;}
+.card__cat{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.card__title{font-family:var(--font-display);font-weight:600;font-size:18px;line-height:1.22;margin:0;transition:color .18s ease;}
+.card:hover .card__title{color:var(--accent);}
 .card__desc{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.card__foot{font-size:12.5px;color:var(--accent);font-weight:600;margin-top:auto;display:flex;align-items:center;gap:5px;}
-.card__foot svg{transition:transform .2s ease;}
-.card:hover .card__foot svg{transform:translateX(3px);}
 
 .empty{
   text-align:center;padding:56px 20px;color:var(--muted);
@@ -254,7 +248,7 @@ body::before{
 
 /* Ideias de hoje view */
 .today-intro{margin-bottom:26px;}
-.today-intro__eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;}
+.today-intro__eyebrow{font-family:var(--font-display);font-style:italic;font-size:15px;color:var(--accent);margin:0 0 10px;}
 .today-intro__title{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.12;margin:0 0 12px;max-width:20ch;text-wrap:balance;}
 .today-intro__sub{font-size:15px;color:var(--muted);line-height:1.55;max-width:52ch;margin:0;}
 
@@ -314,7 +308,7 @@ body::before{
 }
 .panel__close:hover{border-color:var(--accent);}
 .panel__close:active{transform:scale(.92);}
-.panel__eyebrow{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11.5px;color:var(--accent);letter-spacing:.03em;margin:0 0 10px;text-transform:uppercase;}
+.panel__eyebrow{display:flex;align-items:center;gap:7px;font-family:var(--font-display);font-style:italic;font-size:15px;color:var(--accent);margin:0 0 10px;}
 .panel__title{font-family:var(--font-display);font-weight:600;font-size:clamp(24px,4vw,32px);line-height:1.1;margin:0 0 22px;max-width:22ch;text-wrap:balance;}
 
 .preview{
@@ -331,7 +325,7 @@ body::before{
 .preview__example b{color:var(--fg);font-weight:600;}
 
 .section{margin-bottom:22px;}
-.section__label{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:0 0 8px;}
+.section__label{font-family:var(--font-display);font-style:italic;font-size:14.5px;color:var(--muted);margin:0 0 8px;}
 .section__text{font-size:14.5px;line-height:1.6;margin:0;}
 
 .promptbox{
@@ -388,7 +382,7 @@ body::before{
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path></svg>
       </button>
     </div>
-    <span class="brand__meta reveal" style="--d:1"><span class="count" data-target="120">120</span> PROMPTS · <span class="count" data-target="10">10</span> CATEGORIAS</span>
+    <span class="brand__meta reveal" style="--d:1"><span class="count" data-target="120">120</span> prompts em <span class="count" data-target="10">10</span> categorias</span>
     <nav class="nav reveal" style="--d:2">
       <button class="nav__item is-active" data-view="catalogo" type="button">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
@@ -440,7 +434,7 @@ body::before{
       </section>
 
       <footer class="footer">
-        <span>Brompt · biblioteca de prompts com IA</span>
+        <span>Brompt, biblioteca de prompts com IA.</span>
         <span>Baseado em 120 Prompts Poderosos para Empreender com IA</span>
       </footer>
     </section>
@@ -599,15 +593,6 @@ function iconSvg(slug, size){
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[CAT_ICON[slug]]||ICONS[slug]||'')+'</svg>';
 }
 
-function attachCardHover(c){
-  if(!MOTION_OK) return;
-  c.addEventListener('pointermove', e=>{
-    const r = c.getBoundingClientRect();
-    c.style.setProperty('--mx', (e.clientX-r.left)+'px');
-    c.style.setProperty('--my', (e.clientY-r.top)+'px');
-  });
-}
-
 function renderChips(){
   const counts = {};
   PROMPTS.forEach(p=>{counts[p.categoria_slug]=(counts[p.categoria_slug]||0)+1;});
@@ -648,10 +633,9 @@ function renderQuick(){
 
 function cardHtml(p, i){
   return '<button class="card" data-id="'+p.id+'" style="--i:'+i+'">'+
-    '<div class="card__top"><span class="card__id">#'+p.id+'</span><span class="card__cat">'+p.categoria+'</span></div>'+
+    '<div class="card__top"><span class="card__id">Nº '+p.id+'</span><span class="card__cat">'+p.categoria+'</span></div>'+
     '<h3 class="card__title">'+p.titulo+'</h3>'+
     '<p class="card__desc">'+p.para_que_serve+'</p>'+
-    '<span class="card__foot">Ver prévia '+iconSvg('arrow',13)+'</span>'+
   '</button>';
 }
 
@@ -667,7 +651,6 @@ function renderGrid(list){
   els.grid.innerHTML = list.map(cardHtml).join('');
   els.grid.querySelectorAll('.card').forEach(c=>{
     c.addEventListener('click', ()=>openDetail(c.getAttribute('data-id')));
-    attachCardHover(c);
   });
   const base = currentQuery.trim() || activeCategory ? list.length+' '+(list.length===1?'prompt encontrado':'prompts encontrados') : 'Mostrando todos os '+list.length+' prompts';
   els.count.textContent = base;
@@ -685,7 +668,7 @@ function renderSuggestions(){
   if(!list.length){ hideSuggestions(); return; }
   els.suggestions.innerHTML = list.map(p=>
     '<div class="suggestions__item" data-id="'+p.id+'">'+
-      '<span class="suggestions__id">#'+p.id+'</span>'+
+      '<span class="suggestions__id">Nº '+p.id+'</span>'+
       '<span class="suggestions__title">'+p.titulo+'</span>'+
       '<span class="suggestions__cat">'+p.categoria+'</span>'+
     '</div>'
@@ -707,7 +690,7 @@ function hideSuggestions(){
 
 function openDetailObj(p){
   els.panelContent.innerHTML =
-    '<p class="panel__eyebrow">'+iconSvg(p.categoria_slug,12)+'<span>'+escapeHtml(p.categoria)+(p.id?' · #'+p.id:'')+'</span></p>'+
+    '<p class="panel__eyebrow">'+iconSvg(p.categoria_slug,13)+'<span>'+escapeHtml(p.categoria)+(p.id?' (nº '+p.id+')':'')+'</span></p>'+
     '<h2 class="panel__title">'+escapeHtml(p.titulo)+'</h2>'+
     '<div class="preview">'+
       '<div class="preview__label">'+iconSvg('spark',14)+'<span>Prévia do que você recebe</span></div>'+
@@ -902,10 +885,9 @@ function pickIdeas(n, excludeIds){
 }
 function ideaCardHtml(t, product, i){
   return '<button class="card" data-i="'+i+'" style="--i:'+i+'">'+
-    '<div class="card__top"><span class="card__id">IDEIA '+(i+1)+'</span><span class="card__cat">VÍDEO · TIKTOK SHOP</span></div>'+
+    '<div class="card__top"><span class="card__id">Ideia '+(i+1)+'</span><span class="card__cat">Vídeo para TikTok Shop</span></div>'+
     '<h3 class="card__title">'+escapeHtml(t.acao)+'</h3>'+
     '<p class="card__desc">'+escapeHtml(t.preview)+'</p>'+
-    '<span class="card__foot">Ver prompt '+iconSvg('arrow',13)+'</span>'+
   '</button>';
 }
 function renderIdeas(){
@@ -926,7 +908,6 @@ function renderIdeas(){
         como_usar:t.dica,
       });
     });
-    attachCardHover(c);
   });
 }
 function initIdeas(){
