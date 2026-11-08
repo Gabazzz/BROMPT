@@ -88,18 +88,27 @@ body::before{
 .theme-toggle svg{transition:transform .45s cubic-bezier(.34,1.56,.64,1);}
 .theme-toggle.is-spinning svg{transform:rotate(180deg);}
 
-.nav{display:flex;flex-direction:column;gap:4px;}
+.nav{display:flex;flex-direction:column;gap:4px;position:relative;}
+.nav__indicator{
+  position:absolute;left:0;top:0;width:0;height:0;
+  background:var(--surface);border:1px solid var(--line);border-radius:11px;
+  transform:translate(0,0);
+  transition:transform .4s cubic-bezier(.16,1,.3,1), width .4s cubic-bezier(.16,1,.3,1), height .4s cubic-bezier(.16,1,.3,1);
+  z-index:0;pointer-events:none;
+}
+.nav__indicator.is-instant{transition:none;}
 .nav__item{
+  position:relative;z-index:1;
   display:flex;align-items:center;gap:10px;
   padding:10px 12px;border-radius:11px;border:1px solid transparent;
   background:none;color:var(--muted);
   font-family:var(--font-body);font-size:14px;font-weight:500;
   cursor:pointer;text-align:left;width:100%;
-  transition:background .15s ease,color .15s ease,border-color .15s ease;
+  transition:color .2s ease;
 }
-.nav__item svg{flex:none;opacity:.85;}
+.nav__item svg{flex:none;opacity:.85;transition:opacity .2s ease,color .2s ease;}
 .nav__item:hover{color:var(--fg);}
-.nav__item.is-active{background:var(--surface);border-color:var(--line);color:var(--fg);}
+.nav__item.is-active{color:var(--fg);}
 .nav__item.is-active svg{color:var(--accent);opacity:1;}
 
 .main{flex:1;min-width:0;}
@@ -344,17 +353,31 @@ body::before{
 }
 .copybtn:hover{filter:brightness(1.08);}
 .copybtn.is-done{background:var(--surface);color:var(--fg);border:1px solid var(--line);}
+.copybtn__check{display:inline-block;vertical-align:-2px;margin-right:3px;}
+.copybtn__check path{stroke-dasharray:20;stroke-dashoffset:0;}
+.motion-ok .copybtn__check path{animation:drawCheck .3s ease forwards;}
 
 [hidden]{display:none!important;}
+
+/* view switch — one considered crossfade, not per-element scatter */
+.view-out{animation:viewOut .16s ease forwards;}
+.view-in{opacity:0;transform:translateY(8px);}
+.view-in-active{opacity:1;transform:none;transition:opacity .32s cubic-bezier(.16,1,.3,1), transform .32s cubic-bezier(.16,1,.3,1);}
+@keyframes viewOut{to{opacity:0;transform:translateY(-6px);}}
 
 /* entrance choreography — only for viewers who haven't asked for less motion */
 .motion-ok .reveal,
 .motion-ok .reveal-line{opacity:0;transform:translateY(14px);animation:revealUp .62s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(var(--d,0) * 70ms + 40ms);}
 .motion-ok .card{opacity:0;transform:translateY(10px);animation:cardIn .4s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(min(var(--i,0),16) * 26ms);}
+.motion-ok .card.is-pressed{animation:stampPress .22s cubic-bezier(.16,1,.3,1);}
 .motion-ok .copybtn.is-done{animation:pop .32s ease;}
+.motion-ok .grain{animation:grainDrift 32s ease-in-out infinite;}
 @keyframes revealUp{to{opacity:1;transform:none;}}
 @keyframes cardIn{to{opacity:1;transform:none;}}
+@keyframes stampPress{0%{transform:scale(1);}45%{transform:scale(.965);border-color:var(--accent);}100%{transform:scale(1);}}
 @keyframes pop{0%{transform:scale(1);}45%{transform:scale(1.07);}100%{transform:scale(1);}}
+@keyframes drawCheck{from{stroke-dashoffset:20;}to{stroke-dashoffset:0;}}
+@keyframes grainDrift{0%,100%{transform:translate(0,0);}50%{transform:translate(-1.4%,1.4%);}}
 
 @media (max-width:880px){
   .shell{flex-direction:column;gap:22px;padding-block:28px 60px;}
@@ -384,6 +407,7 @@ body::before{
     </div>
     <span class="brand__meta reveal" style="--d:1"><span class="count" data-target="120">120</span> prompts em <span class="count" data-target="10">10</span> categorias</span>
     <nav class="nav reveal" style="--d:2">
+      <span class="nav__indicator is-instant" aria-hidden="true"></span>
       <button class="nav__item is-active" data-view="catalogo" type="button">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
         <span>Catálogo</span>
@@ -484,7 +508,8 @@ const ICONS = {
   gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.6V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6 1H20a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1z"/>',
   seed:'<path d="M12 22c4-1 8-5 8-11a8 8 0 0 0-8-8 8 8 0 0 0-8 8c0 6 4 10 8 11z"/><path d="M12 22V9"/>',
   compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
-  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>'
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>'
 };
 const CAT_ICON = {"imagens": "img", "videos": "play", "tiktok-shop": "tag", "negocios": "spark", "renda-extra": "coin", "marketing": "megaphone", "viral": "bolt", "automacao": "gear", "iniciantes": "seed", "avancado": "compass"};
 
@@ -593,6 +618,16 @@ function iconSvg(slug, size){
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[CAT_ICON[slug]]||ICONS[slug]||'')+'</svg>';
 }
 
+function pressCard(c, fn){
+  if(MOTION_OK){
+    c.classList.add('is-pressed');
+    setTimeout(()=>c.classList.remove('is-pressed'), 240);
+    setTimeout(fn, 90);
+  } else {
+    fn();
+  }
+}
+
 function renderChips(){
   const counts = {};
   PROMPTS.forEach(p=>{counts[p.categoria_slug]=(counts[p.categoria_slug]||0)+1;});
@@ -650,7 +685,7 @@ function renderGrid(list){
   els.empty.hidden = true;
   els.grid.innerHTML = list.map(cardHtml).join('');
   els.grid.querySelectorAll('.card').forEach(c=>{
-    c.addEventListener('click', ()=>openDetail(c.getAttribute('data-id')));
+    c.addEventListener('click', ()=>pressCard(c, ()=>openDetail(c.getAttribute('data-id'))));
   });
   const base = currentQuery.trim() || activeCategory ? list.length+' '+(list.length===1?'prompt encontrado':'prompts encontrados') : 'Mostrando todos os '+list.length+' prompts';
   els.count.textContent = base;
@@ -714,7 +749,7 @@ function openDetailObj(p){
   copyBtn.addEventListener('click', ()=>{
     const text = p.prompt;
     const done = ()=>{
-      copyBtn.textContent = 'Copiado!';
+      copyBtn.innerHTML = '<svg class="copybtn__check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'+ICONS.check+'</svg>Copiado!';
       copyBtn.classList.add('is-done');
       setTimeout(()=>{copyBtn.textContent='Copiar';copyBtn.classList.remove('is-done');},1600);
     };
@@ -816,16 +851,45 @@ const VIEWS = {
   catalogo: document.getElementById('view-catalogo'),
   hoje: document.getElementById('view-hoje'),
 };
+const navIndicator = document.querySelector('.nav__indicator');
+function positionNavIndicator(){
+  const active = document.querySelector('.nav__item.is-active');
+  const nav = document.querySelector('.nav');
+  if(!active || !nav || !navIndicator) return;
+  const navRect = nav.getBoundingClientRect();
+  const r = active.getBoundingClientRect();
+  navIndicator.style.transform = 'translate('+(r.left-navRect.left)+'px,'+(r.top-navRect.top)+'px)';
+  navIndicator.style.width = r.width+'px';
+  navIndicator.style.height = r.height+'px';
+}
 function setView(name){
   if(!VIEWS[name]) name = 'catalogo';
-  Object.keys(VIEWS).forEach(k=>{ VIEWS[k].hidden = k!==name; });
+  const next = VIEWS[name];
+  const current = Object.values(VIEWS).find(v=>!v.hidden);
   document.querySelectorAll('.nav__item').forEach(b=>b.classList.toggle('is-active', b.getAttribute('data-view')===name));
+  positionNavIndicator();
+  if(!MOTION_OK || !current || current===next){
+    Object.keys(VIEWS).forEach(k=>{ VIEWS[k].hidden = k!==name; });
+  } else {
+    current.classList.add('view-out');
+    setTimeout(()=>{
+      current.hidden = true;
+      current.classList.remove('view-out');
+      next.hidden = false;
+      next.classList.add('view-in');
+      requestAnimationFrame(()=>{
+        next.classList.add('view-in-active');
+        setTimeout(()=>next.classList.remove('view-in','view-in-active'), 340);
+      });
+    }, 160);
+  }
   if(location.hash.slice(1)!==name){ history.replaceState(null,'','#'+name); }
 }
 document.querySelectorAll('.nav__item').forEach(b=>{
   b.addEventListener('click', ()=>setView(b.getAttribute('data-view')));
 });
 window.addEventListener('hashchange', ()=>setView(location.hash.slice(1)));
+window.addEventListener('resize', positionNavIndicator);
 
 /* ---- ideias de hoje: gerador de prompt de vídeo com produto ---- */
 const IDEA_TEMPLATES = [
@@ -894,7 +958,7 @@ function renderIdeas(){
   const product = currentProduct();
   els.ideaGrid.innerHTML = todayPicks.map((t,i)=>ideaCardHtml(t, product, i)).join('');
   els.ideaGrid.querySelectorAll('.card').forEach((c,i)=>{
-    c.addEventListener('click', ()=>{
+    c.addEventListener('click', ()=>pressCard(c, ()=>{
       const t = todayPicks[i];
       openDetailObj({
         categoria:'Vídeo pra TikTok Shop',
@@ -907,7 +971,7 @@ function renderIdeas(){
         prompt:fillTemplate(t.prompt, product),
         como_usar:t.dica,
       });
-    });
+    }));
   });
 }
 function initIdeas(){
@@ -930,4 +994,5 @@ renderGrid(PROMPTS);
 runCountUp();
 initIdeas();
 setView(location.hash.slice(1) || 'catalogo');
+requestAnimationFrame(()=>{ if(navIndicator) navIndicator.classList.remove('is-instant'); });
 </script>
