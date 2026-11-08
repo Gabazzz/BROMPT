@@ -1,6 +1,6 @@
-import json, re, pathlib
+import json, re
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = __import__('pathlib').Path(__file__).resolve().parent.parent
 data = json.load(open(ROOT / 'data' / 'prompts.json', encoding='utf-8'))
 
 CAT_ICON = {
@@ -23,11 +23,14 @@ for d in data:
         seen.add(d['categoria'])
         cats.append({'nome': d['categoria'], 'slug': d['categoria_slug']})
 
+DAILY_SLUGS = ['imagens', 'videos', 'viral']
+
 json_data = json.dumps(data, ensure_ascii=False)
 json_data = json_data.replace('</', '<\\/')
 json_cats = json.dumps(cats, ensure_ascii=False)
 json_cats = json_cats.replace('</', '<\\/')
 json_icons = json.dumps(CAT_ICON, ensure_ascii=False)
+json_daily_slugs = json.dumps(DAILY_SLUGS, ensure_ascii=False)
 
 TEMPLATE = r'''<meta name="claude:viewport-fit-sides" content="cover">
 <title>Brompt</title>
@@ -215,6 +218,37 @@ body::before{
 .chip.is-active svg{color:var(--accent-fg);opacity:1;}
 .chip__count{font-family:var(--font-mono);font-size:11px;opacity:.75;font-variant-numeric:tabular-nums;}
 
+.today{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:24px;
+  margin-bottom:36px;
+}
+.today__head{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;
+  margin-bottom:18px;
+}
+.today__eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px;}
+.today__title{font-family:var(--font-display);font-weight:600;font-size:clamp(20px,3vw,26px);margin:0;}
+.today__date{font-size:12.5px;color:var(--muted);}
+.today__shuffle{
+  flex:none;display:flex;align-items:center;gap:6px;
+  font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--fg);
+  background:var(--bg);border:1px solid var(--line);border-radius:999px;
+  padding:9px 15px;cursor:pointer;transition:border-color .15s ease, transform .1s ease;
+}
+.today__shuffle:hover{border-color:var(--accent);}
+.today__shuffle:active{transform:scale(.96);}
+.today__shuffle svg{transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.today__shuffle.is-spinning svg{transform:rotate(180deg);}
+.today__grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;
+}
+.today__grid .card{background:var(--bg);}
+
 .results__head{
   display:flex;align-items:baseline;justify-content:space-between;
   margin:36px 0 16px;
@@ -379,7 +413,22 @@ body::before{
     <p class="hero__sub reveal" style="--d:5">Catálogo vivo de prompts de IA para quem vende e cria conteúdo no TikTok Shop — imagens, vídeos, automações, copy e estratégia.</p>
   </header>
 
-  <section class="search reveal" style="--d:6">
+  <section class="today reveal" style="--d:6">
+    <div class="today__head">
+      <div>
+        <p class="today__eyebrow">Ideias de hoje</p>
+        <h2 class="today__title">5 prompts pra gravar agora</h2>
+        <span class="today__date" id="todayDate"></span>
+      </div>
+      <button class="today__shuffle" id="todayShuffle" type="button">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        <span>Quero outras 5</span>
+      </button>
+    </div>
+    <div class="today__grid" id="todayGrid"></div>
+  </section>
+
+  <section class="search reveal" style="--d:7">
     <div class="search__box">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
       <input id="searchInput" type="text" placeholder="Ex.: quero um depoimento em vídeo pra anúncio" autocomplete="off" aria-label="Buscar prompt">
@@ -387,15 +436,15 @@ body::before{
     </div>
     <div class="suggestions" id="suggestions" hidden></div>
 
-    <div class="quickrow reveal" id="quickrow" style="--d:7">
+    <div class="quickrow reveal" id="quickrow" style="--d:8">
       <span class="quickrow__label">Tente:</span>
     </div>
 
-    <div class="chips reveal" id="chips" style="--d:8"></div>
+    <div class="chips reveal" id="chips" style="--d:9"></div>
   </section>
 
   <section class="results">
-    <div class="results__head reveal" style="--d:9">
+    <div class="results__head reveal" style="--d:10">
       <span class="results__count" id="resultsCount"></span>
     </div>
     <div class="grid" id="grid"></div>
@@ -436,6 +485,7 @@ const ICONS = {
   arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>'
 };
 const CAT_ICON = __ICONS__;
+const DAILY_SLUGS = __DAILY_SLUGS__;
 
 const SYN = {
   foto:'imagem', fotos:'imagem', imagens:'imagem', imagem:'imagem',
@@ -529,6 +579,9 @@ const els = {
   panel: document.getElementById('panel'),
   panelContent: document.getElementById('panelContent'),
   closeBtn: document.getElementById('closeBtn'),
+  todayGrid: document.getElementById('todayGrid'),
+  todayDate: document.getElementById('todayDate'),
+  todayShuffle: document.getElementById('todayShuffle'),
 };
 
 function iconSvg(slug, size){
@@ -573,6 +626,65 @@ function renderQuick(){
     });
   });
 }
+
+function mulberry32(seed){
+  return function(){
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function seededShuffle(arr, rand){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(rand()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function dateSeed(d){
+  const key = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+  let h = 0;
+  String(key).split('').forEach(ch=>{ h = (h*31 + ch.charCodeAt(0)) | 0; });
+  return h;
+}
+const dailyPool = PROMPTS.filter(p=>DAILY_SLUGS.includes(p.categoria_slug));
+let todayShown = [];
+
+function pickToday(seed){
+  const rand = mulberry32(seed);
+  const shuffled = seededShuffle(dailyPool, rand);
+  return shuffled.slice(0,5);
+}
+function renderToday(list){
+  todayShown = list;
+  els.todayGrid.innerHTML = list.map((p,i)=>cardHtml(p,i)).join('');
+  els.todayGrid.querySelectorAll('.card').forEach(c=>{
+    c.addEventListener('click', ()=>openDetail(c.getAttribute('data-id')));
+    if(MOTION_OK){
+      c.addEventListener('pointermove', e=>{
+        const r = c.getBoundingClientRect();
+        c.style.setProperty('--mx', (e.clientX-r.left)+'px');
+        c.style.setProperty('--my', (e.clientY-r.top)+'px');
+      });
+    }
+  });
+}
+function initToday(){
+  const now = new Date();
+  els.todayDate.textContent = now.toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'});
+  renderToday(pickToday(dateSeed(now)));
+}
+els.todayShuffle.addEventListener('click', ()=>{
+  const others = dailyPool.filter(p=>!todayShown.some(s=>s.id===p.id));
+  const pool = others.length>=5 ? others : dailyPool;
+  renderToday(seededShuffle(pool, Math.random).slice(0,5));
+  if(MOTION_OK){
+    els.todayShuffle.classList.add('is-spinning');
+    setTimeout(()=>els.todayShuffle.classList.remove('is-spinning'), 450);
+  }
+});
 
 function cardHtml(p, i){
   return '<button class="card" data-id="'+p.id+'" style="--i:'+i+'">'+
@@ -764,10 +876,11 @@ renderQuick();
 renderChips();
 renderGrid(PROMPTS);
 runCountUp();
+initToday();
 </script>
 '''
 
-html = TEMPLATE.replace('__PROMPTS__', json_data).replace('__CATEGORIES__', json_cats).replace('__ICONS__', json_icons)
+html = TEMPLATE.replace('__PROMPTS__', json_data).replace('__CATEGORIES__', json_cats).replace('__ICONS__', json_icons).replace('__DAILY_SLUGS__', json_daily_slugs)
 
 with open(ROOT / 'index.html', 'w', encoding='utf-8') as f:
     f.write(html)
