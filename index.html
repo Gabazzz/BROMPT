@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Brompt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -390,11 +395,32 @@ body::before{
   .panel{width:100%;}
   .grid{grid-template-columns:1fr 1fr;}
 }
-@media (max-width:420px){
-  .grid{grid-template-columns:1fr;}
+@media (max-width:640px){
+  .shell{padding-inline:18px;padding-block:22px 52px;gap:18px;}
+  .sidebar{gap:14px;}
+  .theme-toggle{width:40px;height:40px;}
+  .nav__item{padding:12px 10px;font-size:14.5px;}
+  .hero{margin-bottom:24px;}
+  .hero__sub{font-size:15px;}
+  .search{margin-bottom:22px;}
+  .search__box{padding:13px 15px;}
+  .quick,.chip{padding:10px 15px;font-size:13.5px;}
+  .chips{margin-top:16px;}
+  .results__head{margin:28px 0 14px;}
+  .grid{grid-template-columns:1fr;gap:12px;}
+  .card{padding:18px 18px 19px;}
+  .card__title{font-size:18px;}
+  .card__desc{font-size:14px;-webkit-line-clamp:3;}
+  .panel{padding:24px 18px calc(36px + env(safe-area-inset-bottom,0px));}
+  .panel__title{margin-bottom:18px;}
+  .preview{padding:17px;}
+  .promptbox pre{font-size:13.5px;}
+  .productbar{flex-direction:column;align-items:stretch;}
+  .ideashuffle{justify-content:center;}
 }
 </style>
-
+</head>
+<body>
 <script>try{if(window.matchMedia && matchMedia('(prefers-reduced-motion: no-preference)').matches){document.documentElement.classList.add('motion-ok');}}catch(e){}</script>
 <div class="grain" aria-hidden="true"></div>
 
@@ -999,3 +1025,5 @@ initIdeas();
 setView(location.hash.slice(1) || 'catalogo');
 requestAnimationFrame(()=>{ if(navIndicator) navIndicator.classList.remove('is-instant'); });
 </script>
+</body>
+</html>
