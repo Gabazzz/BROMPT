@@ -306,9 +306,9 @@ body::before{
 }
 .card:hover{border-color:var(--accent);transform:translateX(3px);}
 .card:active{transform:translateX(1px);}
-.card__top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.card__id{font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:2px 6px;}
-.card__cat{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.card__top{display:flex;align-items:center;gap:8px;}
+.card__id{flex:none;font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:2px 6px;}
+.card__cat{flex:1;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
 .card__title{font-family:var(--font-display);font-weight:600;font-size:18px;line-height:1.22;margin:0;transition:color .18s ease;}
 .card:hover .card__title{color:var(--accent);}
 .card__desc{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0;
@@ -415,6 +415,90 @@ body::before{
 
 .vpanel-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px;}
 
+/* favorites (star toggle) */
+.favbtn{
+  flex:none;display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--muted);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;
+  padding:9px 15px;cursor:pointer;transition:border-color .15s ease,color .15s ease,transform .1s ease,background .15s ease;
+}
+.favbtn:hover{border-color:var(--accent);color:var(--fg);}
+.favbtn:active{transform:scale(.96);}
+.favbtn.is-active{background:var(--accent);border-color:var(--accent);color:var(--accent-fg);}
+.favbtn--panel{margin:0 0 20px;}
+.favbtn--icon{flex:none;width:26px;height:26px;padding:0;justify-content:center;}
+.card .favbtn--icon{background:var(--bg);}
+.vcard .favbtn--icon{position:absolute;top:10px;right:10px;z-index:2;background:var(--bg);}
+
+/* Modelos de IA view */
+.personaform{
+  display:flex;flex-direction:column;gap:10px;
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:18px;margin-bottom:24px;
+}
+.personaform input,.personaform textarea{
+  background:var(--bg);border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px;font-family:var(--font-body);font-size:14.5px;color:var(--fg);
+  outline:none;resize:vertical;transition:border-color .15s ease;
+}
+.personaform input:focus,.personaform textarea:focus{border-color:var(--accent);}
+.personaform__add{
+  align-self:flex-start;
+  font-family:var(--font-body);font-size:13.5px;font-weight:600;
+  background:var(--accent);color:var(--accent-fg);border:none;border-radius:999px;
+  padding:10px 18px;cursor:pointer;transition:filter .15s ease,transform .1s ease;
+}
+.personaform__add:hover{filter:brightness(1.08);}
+.personaform__add:active{transform:scale(.96);}
+.personagrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
+.personacard{
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--line);
+  border-radius:3px 13px 3px 3px;padding:16px 17px;
+}
+.personacard__top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.personacard__name{font-family:var(--font-display);font-weight:600;font-size:16.5px;margin:0;}
+.personacard__del{flex:none;border:none;background:none;color:var(--muted);cursor:pointer;padding:4px;border-radius:6px;transition:color .15s ease,background .15s ease;}
+.personacard__del:hover{color:var(--fg);background:var(--line);}
+.personacard__desc{font-size:13.5px;color:var(--muted);line-height:1.5;margin:8px 0 0;}
+
+/* Histórico view */
+.historylist{display:flex;flex-direction:column;gap:10px;}
+.historyitem{
+  text-align:left;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--line);
+  border-radius:3px 13px 3px 3px;padding:14px 16px;cursor:pointer;font-family:inherit;color:inherit;
+  display:flex;flex-direction:column;gap:4px;width:100%;
+  transition:border-color .18s ease, transform .18s ease;
+}
+.historyitem:hover{border-color:var(--accent);transform:translateX(3px);}
+.historyitem__top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);}
+.historyitem__title{font-family:var(--font-display);font-weight:600;font-size:16px;margin:0;}
+.historyclear{
+  margin-top:18px;font-family:var(--font-body);font-size:13px;color:var(--muted);
+  background:none;border:1px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer;
+  transition:border-color .15s ease,color .15s ease;
+}
+.historyclear:hover{border-color:var(--accent);color:var(--fg);}
+
+/* notas por prompt */
+.notebox{
+  width:100%;min-height:80px;resize:vertical;box-sizing:border-box;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:12px 14px;font-family:var(--font-body);font-size:13.5px;color:var(--fg);
+  outline:none;transition:border-color .15s ease;
+}
+.notebox:focus{border-color:var(--accent);}
+.notebox__saved{display:inline-block;margin-top:6px;font-size:12px;color:var(--accent);}
+
+/* "me surpreenda" */
+.randombtn{
+  display:inline-flex;align-items:center;gap:7px;margin-top:12px;
+  font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--fg);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;
+  padding:9px 15px;cursor:pointer;transition:border-color .15s ease,transform .1s ease;
+}
+.randombtn:hover{border-color:var(--accent);}
+.randombtn:active{transform:scale(.96);}
+
 /* overlay / detail panel */
 .overlay{
   position:fixed;inset:0;z-index:50;
@@ -486,6 +570,7 @@ body::before{
 .motion-ok .copybtn__check path{animation:drawCheck .3s ease forwards;}
 
 [hidden]{display:none!important;}
+.card:focus-visible,.historyitem:focus-visible,.favbtn:focus-visible,.randombtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
 /* view switch — one considered crossfade, not per-element scatter */
 .view-out{animation:viewOut .16s ease forwards;}
@@ -514,11 +599,12 @@ body::before{
   .sidebar{position:static;width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}
   .sidebar__brandrow{flex:1 1 auto;}
   .brand__meta{display:none;}
-  .nav{flex-direction:row;gap:8px;flex:1 1 100%;order:3;}
-  .nav__item{flex:1;justify-content:center;}
+  .nav{flex-direction:row;flex-wrap:wrap;gap:8px;flex:1 1 100%;order:3;}
+  .nav__item{flex:1 1 auto;justify-content:center;}
   .panel{width:100%;}
   .grid{grid-template-columns:1fr 1fr;}
   .vgrid{grid-template-columns:1fr 1fr;}
+  .personagrid{grid-template-columns:1fr 1fr;}
 }
 @media (max-width:640px){
   .shell{padding-inline:18px;padding-block:22px 52px;gap:18px;}
@@ -545,6 +631,8 @@ body::before{
   .promptbox pre{font-size:13.5px;}
   .productbar{flex-direction:column;align-items:stretch;}
   .ideashuffle{justify-content:center;}
+  .personagrid{grid-template-columns:1fr;}
+  .randombtn{width:100%;justify-content:center;}
 }
 </style>
 </head>
@@ -576,6 +664,18 @@ body::before{
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2"></rect></svg>
         <span>Lab de Vídeos</span>
       </button>
+      <button class="nav__item" data-view="favoritos" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"></path></svg>
+        <span>Favoritos</span>
+      </button>
+      <button class="nav__item" data-view="personas" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path></svg>
+        <span>Modelos de IA</span>
+      </button>
+      <button class="nav__item" data-view="historico" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 3.5"></path></svg>
+        <span>Histórico</span>
+      </button>
     </nav>
   </aside>
 
@@ -604,6 +704,11 @@ body::before{
         <div class="quickrow reveal" id="quickrow" style="--d:7">
           <span class="quickrow__label">Tente:</span>
         </div>
+
+        <button class="randombtn" id="randomBtn" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"></rect><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"></circle></svg>
+          <span>Me surpreenda</span>
+        </button>
 
         <div class="chips reveal" id="chips" style="--d:8"></div>
       </section>
@@ -664,6 +769,59 @@ body::before{
         <div class="vgrid" id="vgrid"></div>
       </section>
     </section>
+
+    <section id="view-favoritos" hidden>
+      <header class="hero hero--compact">
+        <h1 class="hero__title">
+          <span class="reveal-line" style="--d:1">Seus</span>
+          <span class="reveal-line reveal-accent" style="--d:2">favoritos.</span>
+        </h1>
+        <p class="hero__sub reveal" style="--d:3">Os prompts que você marcou com estrela, pra achar rápido sem precisar buscar de novo.</p>
+      </header>
+      <div class="grid" id="favGrid"></div>
+      <div class="empty" id="favEmpty" hidden>
+        <strong>Nenhum favorito ainda</strong>
+        Clique na estrela de um prompt pra guardar ele aqui.
+      </div>
+    </section>
+
+    <section id="view-personas" hidden>
+      <header class="hero hero--compact">
+        <h1 class="hero__title">
+          <span class="reveal-line" style="--d:1">Modelos</span>
+          <span class="reveal-line reveal-accent" style="--d:2">de IA.</span>
+        </h1>
+        <p class="hero__sub reveal" style="--d:3">Guarde as personas de modelo de IA que você já tem prontas, pra lembrar rápido qual usar em cada prompt.</p>
+      </header>
+
+      <form class="personaform" id="personaForm">
+        <input id="personaNome" type="text" placeholder="Nome da persona (ex.: Ana, modelo fitness)" autocomplete="off" required>
+        <textarea id="personaDesc" placeholder="Características — estilo, cabelo, tom de pele, roupa padrão, personalidade..." rows="2"></textarea>
+        <button type="submit" class="personaform__add">Adicionar persona</button>
+      </form>
+
+      <div class="personagrid" id="personaGrid"></div>
+      <div class="empty" id="personaEmpty" hidden>
+        <strong>Nenhuma persona salva ainda</strong>
+        Adicione as modelos de IA que você já configurou pra lembrar delas aqui.
+      </div>
+    </section>
+
+    <section id="view-historico" hidden>
+      <header class="hero hero--compact">
+        <h1 class="hero__title">
+          <span class="reveal-line" style="--d:1">Histórico de</span>
+          <span class="reveal-line reveal-accent" style="--d:2">copiados.</span>
+        </h1>
+        <p class="hero__sub reveal" style="--d:3">Os últimos prompts que você copiou, do mais recente pro mais antigo.</p>
+      </header>
+      <div class="historylist" id="historyList"></div>
+      <div class="empty" id="historyEmpty" hidden>
+        <strong>Nenhum prompt copiado ainda</strong>
+        Quando você copiar um prompt, ele aparece aqui.
+      </div>
+      <button class="historyclear" id="historyClear" type="button" hidden>Limpar histórico</button>
+    </section>
   </main>
 </div>
 
@@ -698,7 +856,8 @@ const ICONS = {
   motion:'<path d="M4 17l5-10 4 7 3-5 4 8"/>',
   hanger:'<path d="M12 4a1.6 1.6 0 1 1 1.6 1.6M4 19l6.5-6a2 2 0 0 1 3 0L20 19"/><path d="M2 19h20"/>',
   cta:'<path d="M6 3h12a1 1 0 0 1 1 1v16l-4-3-3 3-3-3-4 3V4a1 1 0 0 1 1-1z"/>',
-  film:'<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>'
+  film:'<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>',
+  trash:'<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"/><path d="M10 11v6M14 11v6"/>'
 };
 const CAT_ICON = __ICONS__;
 const TAG_ICON = {
@@ -808,6 +967,17 @@ const els = {
   vtags: document.getElementById('vtags'),
   vgrid: document.getElementById('vgrid'),
   vCount: document.getElementById('vResultsCount'),
+  favGrid: document.getElementById('favGrid'),
+  favEmpty: document.getElementById('favEmpty'),
+  personaForm: document.getElementById('personaForm'),
+  personaNome: document.getElementById('personaNome'),
+  personaDesc: document.getElementById('personaDesc'),
+  personaGrid: document.getElementById('personaGrid'),
+  personaEmpty: document.getElementById('personaEmpty'),
+  historyList: document.getElementById('historyList'),
+  historyEmpty: document.getElementById('historyEmpty'),
+  historyClear: document.getElementById('historyClear'),
+  randomBtn: document.getElementById('randomBtn'),
 };
 
 function iconSvg(slug, size){
@@ -818,6 +988,83 @@ function tagIconSvg(tag, size){
   size = size || 14;
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[TAG_ICON[tag]]||ICONS.film||'')+'</svg>';
 }
+const STAR_PATH = 'M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z';
+function starSvg(size, active){
+  size = size || 15;
+  const fill = active ? 'currentColor' : 'none';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="'+fill+'" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="'+STAR_PATH+'"/></svg>';
+}
+
+/* ---- favoritos (localStorage) ---- */
+function loadFavorites(){
+  try{ return JSON.parse(localStorage.getItem('brompt-favorites')||'[]'); }catch(e){ return []; }
+}
+function saveFavorites(arr){
+  try{ localStorage.setItem('brompt-favorites', JSON.stringify(arr)); }catch(e){}
+}
+let FAVORITES = new Set(loadFavorites());
+function isFavorite(id){ return !!id && FAVORITES.has(id); }
+function refreshFavoriteUI(id){
+  const active = isFavorite(id);
+  document.querySelectorAll('[data-fav-id="'+id+'"]').forEach(btn=>{
+    btn.classList.toggle('is-active', active);
+    const size = parseInt(btn.getAttribute('data-fav-size')||'15',10);
+    const isPanel = btn.classList.contains('favbtn--panel');
+    btn.innerHTML = starSvg(size, active) + (isPanel ? '<span>'+(active?'Favoritado':'Favoritar')+'</span>' : '');
+  });
+  if(VIEWS.favoritos && !VIEWS.favoritos.hidden) renderFavoritos();
+}
+function toggleFavorite(id){
+  if(!id) return;
+  if(FAVORITES.has(id)) FAVORITES.delete(id); else FAVORITES.add(id);
+  saveFavorites([...FAVORITES]);
+  refreshFavoriteUI(id);
+}
+
+/* ---- notas por prompt (localStorage) ---- */
+function loadNotes(){
+  try{ return JSON.parse(localStorage.getItem('brompt-notes')||'{}'); }catch(e){ return {}; }
+}
+function saveNotesStore(obj){
+  try{ localStorage.setItem('brompt-notes', JSON.stringify(obj)); }catch(e){}
+}
+let NOTES = loadNotes();
+function getNote(id){ return (id && NOTES[id]) || ''; }
+function saveNote(id, text){
+  if(!id) return;
+  if(text && text.trim()) NOTES[id] = text; else delete NOTES[id];
+  saveNotesStore(NOTES);
+}
+
+/* ---- histórico de copiados (localStorage) ---- */
+function loadHistory(){
+  try{ return JSON.parse(localStorage.getItem('brompt-history')||'[]'); }catch(e){ return []; }
+}
+function saveHistoryStore(arr){
+  try{ localStorage.setItem('brompt-history', JSON.stringify(arr)); }catch(e){}
+}
+let HISTORY = loadHistory();
+function pushHistory(p){
+  const entry = {
+    id: p.id || null, titulo: p.titulo, categoria: p.categoria, categoria_slug: p.categoria_slug,
+    tags: p.tags || null, para_que_serve: p.para_que_serve, prompt: p.prompt, como_usar: p.como_usar,
+    resultado_esperado: p.resultado_esperado, exemplo_resultado: p.exemplo_resultado, ts: Date.now(),
+  };
+  HISTORY = HISTORY.filter(h=>!(h.id && h.id===entry.id && h.prompt===entry.prompt));
+  HISTORY.unshift(entry);
+  HISTORY = HISTORY.slice(0,30);
+  saveHistoryStore(HISTORY);
+  if(VIEWS.historico && !VIEWS.historico.hidden) renderHistory();
+}
+
+/* ---- personas de IA (localStorage) ---- */
+function loadPersonas(){
+  try{ return JSON.parse(localStorage.getItem('brompt-personas')||'[]'); }catch(e){ return []; }
+}
+function savePersonasStore(arr){
+  try{ localStorage.setItem('brompt-personas', JSON.stringify(arr)); }catch(e){}
+}
+let PERSONAS = loadPersonas();
 
 function pressCard(c, fn){
   if(MOTION_OK){
@@ -868,11 +1115,35 @@ function renderQuick(){
 }
 
 function cardHtml(p, i){
-  return '<button class="card" data-id="'+p.id+'" style="--i:'+i+'">'+
-    '<div class="card__top"><span class="card__id">Nº '+p.id+'</span><span class="card__cat">'+p.categoria+'</span></div>'+
+  const fav = isFavorite(p.id);
+  return '<div class="card" data-id="'+p.id+'" tabindex="0" role="button" style="--i:'+i+'">'+
+    '<div class="card__top"><span class="card__id">Nº '+p.id+'</span><span class="card__cat">'+p.categoria+'</span>'+
+      '<button class="favbtn favbtn--icon'+(fav?' is-active':'')+'" data-fav-id="'+p.id+'" data-fav-size="15" type="button" aria-label="Favoritar" title="Favoritar">'+starSvg(15,fav)+'</button>'+
+    '</div>'+
     '<h3 class="card__title">'+p.titulo+'</h3>'+
     '<p class="card__desc">'+p.para_que_serve+'</p>'+
-  '</button>';
+  '</div>';
+}
+
+function wireCardClicks(container){
+  container.querySelectorAll('.card').forEach(c=>{
+    c.addEventListener('click', e=>{
+      if(e.target.closest('.favbtn')) return;
+      pressCard(c, ()=>openDetail(c.getAttribute('data-id')));
+    });
+    c.addEventListener('keydown', e=>{
+      if((e.key==='Enter'||e.key===' ') && !e.target.closest('.favbtn')){
+        e.preventDefault();
+        pressCard(c, ()=>openDetail(c.getAttribute('data-id')));
+      }
+    });
+    c.querySelectorAll('.favbtn--icon').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        e.stopPropagation();
+        toggleFavorite(btn.getAttribute('data-fav-id'));
+      });
+    });
+  });
 }
 
 function renderGrid(list){
@@ -885,11 +1156,22 @@ function renderGrid(list){
   els.grid.hidden = false;
   els.empty.hidden = true;
   els.grid.innerHTML = list.map(cardHtml).join('');
-  els.grid.querySelectorAll('.card').forEach(c=>{
-    c.addEventListener('click', ()=>pressCard(c, ()=>openDetail(c.getAttribute('data-id'))));
-  });
+  wireCardClicks(els.grid);
   const base = currentQuery.trim() || activeCategory ? list.length+' '+(list.length===1?'prompt encontrado':'prompts encontrados') : 'Mostrando todos os '+list.length+' prompts';
   els.count.textContent = base;
+}
+
+function renderFavoritos(){
+  const list = PROMPTS.filter(p=>FAVORITES.has(p.id));
+  if(!list.length){
+    els.favGrid.hidden = true;
+    els.favEmpty.hidden = false;
+    return;
+  }
+  els.favGrid.hidden = false;
+  els.favEmpty.hidden = true;
+  els.favGrid.innerHTML = list.map(cardHtml).join('');
+  wireCardClicks(els.favGrid);
 }
 
 function runSearch(){
@@ -925,9 +1207,13 @@ function hideSuggestions(){
 }
 
 function openDetailObj(p){
+  const fav = p.id ? isFavorite(p.id) : false;
+  const note = p.id ? getNote(p.id) : '';
   els.panelContent.innerHTML =
     '<p class="panel__eyebrow">'+iconSvg(p.categoria_slug,13)+'<span>'+escapeHtml(p.categoria)+(p.id?' (nº '+p.id+')':'')+'</span></p>'+
     '<h2 class="panel__title">'+escapeHtml(p.titulo)+'</h2>'+
+    (p.id ? '<button class="favbtn favbtn--panel'+(fav?' is-active':'')+'" data-fav-id="'+p.id+'" data-fav-size="16" type="button">'+starSvg(16,fav)+'<span>'+(fav?'Favoritado':'Favoritar')+'</span></button>' : '')+
+    (p.tags && p.tags.length ? '<div class="vpanel-tags">'+p.tags.map(t=>'<span class="vcard__tag">'+tagIconSvg(t,11)+' '+escapeHtml(t)+'</span>').join('')+'</div>' : '')+
     '<div class="preview">'+
       '<div class="preview__label">'+iconSvg('spark',14)+'<span>Prévia do que você recebe</span></div>'+
       '<p class="preview__result">'+escapeHtml(p.resultado_esperado)+'</p>'+
@@ -944,7 +1230,14 @@ function openDetailObj(p){
     '<div class="section">'+
       '<p class="section__label">Como usar</p>'+
       '<p class="section__text">'+escapeHtml(p.como_usar)+'</p>'+
-    '</div>';
+    '</div>'+
+    (p.id ? (
+      '<div class="section">'+
+        '<p class="section__label">Suas notas</p>'+
+        '<textarea class="notebox" id="noteBox" placeholder="Anote o que funcionou, ajustes que você fez...">'+escapeHtml(note)+'</textarea>'+
+        '<span class="notebox__saved" id="noteSaved" hidden>Nota salva</span>'+
+      '</div>'
+    ) : '');
 
   const copyBtn = document.getElementById('copyBtn');
   copyBtn.addEventListener('click', ()=>{
@@ -953,6 +1246,7 @@ function openDetailObj(p){
       copyBtn.innerHTML = '<svg class="copybtn__check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'+ICONS.check+'</svg>Copiado!';
       copyBtn.classList.add('is-done');
       setTimeout(()=>{copyBtn.textContent='Copiar';copyBtn.classList.remove('is-done');},1600);
+      pushHistory(p);
     };
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
@@ -960,6 +1254,28 @@ function openDetailObj(p){
       fallbackCopy(text, done);
     }
   });
+
+  const favBtn = els.panelContent.querySelector('.favbtn--panel');
+  if(favBtn){
+    favBtn.addEventListener('click', ()=>toggleFavorite(p.id));
+  }
+
+  const noteBox = document.getElementById('noteBox');
+  if(noteBox){
+    let noteTimer = null;
+    noteBox.addEventListener('input', ()=>{
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(()=>{
+        saveNote(p.id, noteBox.value);
+        const saved = document.getElementById('noteSaved');
+        if(saved){
+          saved.hidden = false;
+          clearTimeout(saved._t);
+          saved._t = setTimeout(()=>{ saved.hidden = true; }, 1400);
+        }
+      }, 500);
+    });
+  }
 
   els.overlay.hidden = false;
   els.panel.scrollTop = 0;
@@ -1025,8 +1341,11 @@ function renderVideoTags(){
 
 function vcardHtml(v, i){
   const glyph = tagIconSvg(v.tags[0], 30);
+  const fav = isFavorite(v.id);
   return '<div class="vcard" data-id="'+v.id+'" style="--i:'+i+'">'+
-    '<div class="vcard__thumb"><span class="vcard__badge">Nº '+v.id+'</span><span class="vcard__glyph">'+glyph+'</span></div>'+
+    '<div class="vcard__thumb"><span class="vcard__badge">Nº '+v.id+'</span><span class="vcard__glyph">'+glyph+'</span>'+
+      '<button class="favbtn favbtn--icon'+(fav?' is-active':'')+'" data-fav-id="'+v.id+'" data-fav-size="15" type="button" aria-label="Favoritar" title="Favoritar">'+starSvg(15,fav)+'</button>'+
+    '</div>'+
     '<div class="vcard__body">'+
       '<h3 class="vcard__title">'+escapeHtml(v.titulo)+'</h3>'+
       '<div class="vcard__tags">'+v.tags.map(t=>'<span class="vcard__tag">'+escapeHtml(t)+'</span>').join('')+'</div>'+
@@ -1044,49 +1363,24 @@ function renderVideoGrid(){
   els.vgrid.querySelectorAll('.vcard').forEach(c=>{
     const v = VIDEO_LAB.find(x=>x.id===c.getAttribute('data-id'));
     c.addEventListener('click', e=>{
-      if(e.target.closest('.vbtn')) return;
+      if(e.target.closest('.vbtn')||e.target.closest('.favbtn')) return;
       pressCard(c, ()=>openVideoDetail(v.id));
     });
     const btn = c.querySelector('.vbtn');
     if(btn) wireCopyBtn(btn, v.prompt, btn.textContent);
+    const favBtn = c.querySelector('.favbtn--icon');
+    if(favBtn) favBtn.addEventListener('click', e=>{
+      e.stopPropagation();
+      toggleFavorite(favBtn.getAttribute('data-fav-id'));
+    });
   });
 }
 
 function openVideoDetail(id){
   const v = VIDEO_LAB.find(x=>x.id===id);
-  if(!v) return;
-  els.panelContent.innerHTML =
-    '<p class="panel__eyebrow">'+iconSvg('play',13)+'<span>Lab de Vídeos</span></p>'+
-    '<h2 class="panel__title">'+escapeHtml(v.titulo)+'</h2>'+
-    '<div class="vpanel-tags">'+v.tags.map(t=>'<span class="vcard__tag">'+tagIconSvg(t,11)+' '+escapeHtml(t)+'</span>').join('')+'</div>'+
-    '<div class="section">'+
-      '<p class="section__label">Para que serve</p>'+
-      '<p class="section__text">'+escapeHtml(v.para_que_serve)+'</p>'+
-    '</div>'+
-    '<div class="section">'+
-      '<p class="section__label">Prompt completo</p>'+
-      '<div class="promptbox"><pre>'+escapeHtml(v.prompt)+'</pre><button class="copybtn" id="copyVideoBtn">Copiar</button></div>'+
-    '</div>';
-
-  const copyBtn = document.getElementById('copyVideoBtn');
-  copyBtn.addEventListener('click', ()=>{
-    const text = v.prompt;
-    const done = ()=>{
-      copyBtn.innerHTML = '<svg class="copybtn__check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'+ICONS.check+'</svg>Copiado!';
-      copyBtn.classList.add('is-done');
-      setTimeout(()=>{copyBtn.textContent='Copiar';copyBtn.classList.remove('is-done');},1600);
-    };
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
-    } else {
-      fallbackCopy(text, done);
-    }
-  });
-
-  els.overlay.hidden = false;
-  els.panel.scrollTop = 0;
-  document.body.style.overflow = 'hidden';
-  requestAnimationFrame(()=>els.overlay.classList.add('is-open'));
+  const p = PROMPTS.find(x=>x.id===id);
+  if(!v || !p) return;
+  openDetailObj(Object.assign({}, p, {tags: v.tags}));
 }
 
 els.input.addEventListener('input', ()=>{
@@ -1157,6 +1451,9 @@ const VIEWS = {
   catalogo: document.getElementById('view-catalogo'),
   hoje: document.getElementById('view-hoje'),
   videolab: document.getElementById('view-videolab'),
+  favoritos: document.getElementById('view-favoritos'),
+  personas: document.getElementById('view-personas'),
+  historico: document.getElementById('view-historico'),
 };
 const navIndicator = document.querySelector('.nav__indicator');
 function positionNavIndicator(){
@@ -1171,6 +1468,9 @@ function positionNavIndicator(){
 }
 function setView(name){
   if(!VIEWS[name]) name = 'catalogo';
+  if(name==='favoritos') renderFavoritos();
+  if(name==='personas') renderPersonas();
+  if(name==='historico') renderHistory();
   const next = VIEWS[name];
   const current = Object.values(VIEWS).find(v=>!v.hidden);
   document.querySelectorAll('.nav__item').forEach(b=>b.classList.toggle('is-active', b.getAttribute('data-view')===name));
@@ -1314,6 +1614,88 @@ els.ideaShuffle.addEventListener('click', ()=>{
     els.ideaShuffle.classList.add('is-spinning');
     setTimeout(()=>els.ideaShuffle.classList.remove('is-spinning'), 450);
   }
+});
+
+/* ---- Modelos de IA (personas) ---- */
+function renderPersonas(){
+  if(!PERSONAS.length){
+    els.personaGrid.hidden = true;
+    els.personaEmpty.hidden = false;
+    return;
+  }
+  els.personaGrid.hidden = false;
+  els.personaEmpty.hidden = true;
+  els.personaGrid.innerHTML = PERSONAS.map((per,i)=>
+    '<div class="personacard" style="--i:'+i+'">'+
+      '<div class="personacard__top">'+
+        '<h3 class="personacard__name">'+escapeHtml(per.nome)+'</h3>'+
+        '<button class="personacard__del" data-i="'+i+'" type="button" aria-label="Remover persona" title="Remover">'+iconSvg('trash',14)+'</button>'+
+      '</div>'+
+      (per.desc ? '<p class="personacard__desc">'+escapeHtml(per.desc)+'</p>' : '')+
+    '</div>'
+  ).join('');
+  els.personaGrid.querySelectorAll('.personacard__del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const i = parseInt(btn.getAttribute('data-i'),10);
+      PERSONAS.splice(i,1);
+      savePersonasStore(PERSONAS);
+      renderPersonas();
+    });
+  });
+}
+els.personaForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  const nome = els.personaNome.value.trim();
+  if(!nome) return;
+  const desc = els.personaDesc.value.trim();
+  PERSONAS.push({nome:nome, desc:desc});
+  savePersonasStore(PERSONAS);
+  els.personaNome.value = '';
+  els.personaDesc.value = '';
+  renderPersonas();
+});
+
+/* ---- histórico de copiados ---- */
+function historyItemHtml(h){
+  const d = new Date(h.ts);
+  const when = d.toLocaleDateString('pt-BR')+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  return '<button class="historyitem" type="button">'+
+    '<div class="historyitem__top"><span class="historyitem__cat">'+escapeHtml(h.categoria)+'</span><span class="historyitem__when">'+when+'</span></div>'+
+    '<h3 class="historyitem__title">'+escapeHtml(h.titulo)+'</h3>'+
+  '</button>';
+}
+function renderHistory(){
+  if(!HISTORY.length){
+    els.historyList.hidden = true;
+    els.historyEmpty.hidden = false;
+    els.historyClear.hidden = true;
+    return;
+  }
+  els.historyList.hidden = false;
+  els.historyEmpty.hidden = true;
+  els.historyClear.hidden = false;
+  els.historyList.innerHTML = HISTORY.map(historyItemHtml).join('');
+  els.historyList.querySelectorAll('.historyitem').forEach((btn,i)=>{
+    btn.addEventListener('click', ()=>{
+      const h = HISTORY[i];
+      openDetailObj({
+        id: h.id, titulo: h.titulo, categoria: h.categoria, categoria_slug: h.categoria_slug,
+        tags: h.tags, para_que_serve: h.para_que_serve, prompt: h.prompt,
+        como_usar: h.como_usar, resultado_esperado: h.resultado_esperado, exemplo_resultado: h.exemplo_resultado,
+      });
+    });
+  });
+}
+els.historyClear.addEventListener('click', ()=>{
+  HISTORY = [];
+  saveHistoryStore(HISTORY);
+  renderHistory();
+});
+
+/* ---- me surpreenda ---- */
+els.randomBtn.addEventListener('click', ()=>{
+  const pick = PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
+  if(pick) openDetail(pick.id);
 });
 
 renderQuick();
