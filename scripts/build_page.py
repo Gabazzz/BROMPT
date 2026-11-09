@@ -15,16 +15,33 @@ CAT_ICON = {
     'automacao': 'gear',
     'iniciantes': 'seed',
     'avancado': 'compass',
+    'labvideos': 'film',
 }
+
+def vl_to_catalog(v):
+    return {
+        'id': v['id'],
+        'categoria': 'Lab de Vídeos',
+        'categoria_slug': 'labvideos',
+        'titulo': v['titulo'],
+        'para_que_serve': v['para_que_serve'],
+        'prompt': v['prompt'],
+        'como_usar': 'Anexe a imagem de referência do produto ou da peça no Google Flow (VEO 3) e cole este prompt junto. Troque o texto entre colchetes, se o prompt pedir.',
+        'resultado_esperado': 'Vídeo vertical pronto pro TikTok Shop, no estilo "' + v['titulo'] + '", seguindo fielmente a imagem de referência que você anexar.',
+        'exemplo_resultado': 'Cole no Google Flow (VEO 3) junto com a foto do produto ou da peça e grave direto.',
+    }
+
+video_lab_catalog = [vl_to_catalog(v) for v in video_lab]
+catalog_all = data + video_lab_catalog
 
 cats = []
 seen = set()
-for d in data:
+for d in catalog_all:
     if d['categoria'] not in seen:
         seen.add(d['categoria'])
         cats.append({'nome': d['categoria'], 'slug': d['categoria_slug']})
 
-json_data = json.dumps(data, ensure_ascii=False)
+json_data = json.dumps(catalog_all, ensure_ascii=False)
 json_data = json_data.replace('</', '<\\/')
 json_cats = json.dumps(cats, ensure_ascii=False)
 json_cats = json_cats.replace('</', '<\\/')
@@ -1230,16 +1247,23 @@ function currentProduct(){
 function fillTemplate(tpl, product){
   return tpl.split('{PRODUTO}').join(product);
 }
+const IDEA_POOL = IDEA_TEMPLATES.map(t=>({
+  kind:'template', id:t.id, acao:t.acao, preview:t.preview, prompt:t.prompt, dica:t.dica,
+})).concat(VIDEO_LAB.map(v=>({
+  kind:'videolab', id:v.id, acao:v.titulo, preview:v.para_que_serve, prompt:v.prompt,
+  dica:'Anexe a imagem de referência do produto ou da peça no Google Flow (VEO 3) e cole este prompt junto.',
+})));
 let todayPicks = [];
 function pickIdeas(n, excludeIds){
   excludeIds = excludeIds || [];
-  const pool = IDEA_TEMPLATES.filter(t=>!excludeIds.includes(t.id));
-  const base = pool.length>=n ? pool : IDEA_TEMPLATES;
+  const pool = IDEA_POOL.filter(t=>!excludeIds.includes(t.id));
+  const base = pool.length>=n ? pool : IDEA_POOL;
   return seededShuffle(base, Math.random).slice(0,n);
 }
 function ideaCardHtml(t, product, i){
+  const catLabel = t.kind==='videolab' ? 'Lab de Vídeos' : 'Vídeo para TikTok Shop';
   return '<button class="card" data-i="'+i+'" style="--i:'+i+'">'+
-    '<div class="card__top"><span class="card__id">Ideia '+(i+1)+'</span><span class="card__cat">Vídeo para TikTok Shop</span></div>'+
+    '<div class="card__top"><span class="card__id">Ideia '+(i+1)+'</span><span class="card__cat">'+catLabel+'</span></div>'+
     '<h3 class="card__title">'+escapeHtml(t.acao)+'</h3>'+
     '<p class="card__desc">'+escapeHtml(t.preview)+'</p>'+
   '</button>';
@@ -1250,17 +1274,31 @@ function renderIdeas(){
   els.ideaGrid.querySelectorAll('.card').forEach((c,i)=>{
     c.addEventListener('click', ()=>pressCard(c, ()=>{
       const t = todayPicks[i];
-      openDetailObj({
-        categoria:'Vídeo pra TikTok Shop',
-        categoria_slug:'videos',
-        id:null,
-        titulo:t.acao,
-        resultado_esperado:t.preview,
-        exemplo_resultado:'Cole no Google Flow com a sua modelo de IA já configurada e grave direto.',
-        para_que_serve:'Ideia de vídeo pronta pra gravar hoje com o produto que você está divulgando.',
-        prompt:fillTemplate(t.prompt, product),
-        como_usar:t.dica,
-      });
+      if(t.kind==='videolab'){
+        openDetailObj({
+          categoria:'Lab de Vídeos',
+          categoria_slug:'labvideos',
+          id:t.id,
+          titulo:t.acao,
+          resultado_esperado:t.preview,
+          exemplo_resultado:'Cole no Google Flow (VEO 3) junto com a foto do produto ou da peça e grave direto.',
+          para_que_serve:'Prompt do Lab de Vídeos — travado numa imagem de referência, pronto pra usar com o produto de hoje.',
+          prompt:t.prompt,
+          como_usar:t.dica,
+        });
+      } else {
+        openDetailObj({
+          categoria:'Vídeo pra TikTok Shop',
+          categoria_slug:'videos',
+          id:null,
+          titulo:t.acao,
+          resultado_esperado:t.preview,
+          exemplo_resultado:'Cole no Google Flow com a sua modelo de IA já configurada e grave direto.',
+          para_que_serve:'Ideia de vídeo pronta pra gravar hoje com o produto que você está divulgando.',
+          prompt:fillTemplate(t.prompt, product),
+          como_usar:t.dica,
+        });
+      }
     }));
   });
 }
@@ -1293,7 +1331,7 @@ requestAnimationFrame(()=>{ if(navIndicator) navIndicator.classList.remove('is-i
 '''
 
 html = TEMPLATE.replace('__PROMPTS__', json_data).replace('__CATEGORIES__', json_cats).replace('__ICONS__', json_icons).replace('__VIDEOLAB__', json_videolab)
-html = html.replace('__TOTAL__', str(len(data))).replace('__CATCOUNT__', str(len(cats)))
+html = html.replace('__TOTAL__', str(len(catalog_all))).replace('__CATCOUNT__', str(len(cats)))
 
 with open(ROOT / 'index.html', 'w', encoding='utf-8') as f:
     f.write(html)
