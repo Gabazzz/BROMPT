@@ -635,7 +635,7 @@ body::before{
           <span class="reveal-line" style="--d:1">Lab de</span>
           <span class="reveal-line reveal-accent" style="--d:2">Vídeos.</span>
         </h1>
-        <p class="hero__sub reveal" style="--d:3">Uma galeria de estilos de vídeo pronta pra usar — cada card já vem com o prompt do Google Flow e o prompt do Create (Sora). Filtra por tag e copia direto.</p>
+        <p class="hero__sub reveal" style="--d:3">Uma galeria de estilos de vídeo pronta pra usar — copia o prompt do Flow e já cola no Google Flow. Filtra por tag.</p>
       </header>
 
       <div class="chips reveal" id="vtags" style="--d:4"></div>
@@ -1014,8 +1014,7 @@ function vcardHtml(v, i){
       '<h3 class="vcard__title">'+escapeHtml(v.titulo)+'</h3>'+
       '<div class="vcard__tags">'+v.tags.map(t=>'<span class="vcard__tag">'+escapeHtml(t)+'</span>').join('')+'</div>'+
       '<div class="vcard__actions">'+
-        '<button class="vbtn" data-kind="flow" type="button">Prompt do Flow</button>'+
-        '<button class="vbtn" data-kind="create" type="button">Prompt do Create</button>'+
+        '<button class="vbtn" type="button">Copiar prompt</button>'+
       '</div>'+
     '</div>'+
   '</div>';
@@ -1031,11 +1030,8 @@ function renderVideoGrid(){
       if(e.target.closest('.vbtn')) return;
       pressCard(c, ()=>openVideoDetail(v.id));
     });
-    c.querySelectorAll('.vbtn').forEach(btn=>{
-      const kind = btn.getAttribute('data-kind');
-      const text = kind==='flow' ? v.prompt_flow : v.prompt_create;
-      wireCopyBtn(btn, text, btn.textContent);
-    });
+    const btn = c.querySelector('.vbtn');
+    if(btn) wireCopyBtn(btn, v.prompt, btn.textContent);
   });
 }
 
@@ -1051,28 +1047,23 @@ function openVideoDetail(id){
       '<p class="section__text">'+escapeHtml(v.para_que_serve)+'</p>'+
     '</div>'+
     '<div class="section">'+
-      '<p class="section__label">Prompt do Flow (Google Flow / VEO 3)</p>'+
-      '<div class="promptbox"><pre>'+escapeHtml(v.prompt_flow)+'</pre><button class="copybtn" id="copyFlowBtn">Copiar</button></div>'+
-    '</div>'+
-    '<div class="section">'+
-      '<p class="section__label">Prompt do Create</p>'+
-      '<div class="promptbox"><pre>'+escapeHtml(v.prompt_create)+'</pre><button class="copybtn" id="copyCreateBtn">Copiar</button></div>'+
+      '<p class="section__label">Prompt completo</p>'+
+      '<div class="promptbox"><pre>'+escapeHtml(v.prompt)+'</pre><button class="copybtn" id="copyVideoBtn">Copiar</button></div>'+
     '</div>';
 
-  [['copyFlowBtn', v.prompt_flow], ['copyCreateBtn', v.prompt_create]].forEach(([btnId, text])=>{
-    const copyBtn = document.getElementById(btnId);
-    copyBtn.addEventListener('click', ()=>{
-      const done = ()=>{
-        copyBtn.innerHTML = '<svg class="copybtn__check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'+ICONS.check+'</svg>Copiado!';
-        copyBtn.classList.add('is-done');
-        setTimeout(()=>{copyBtn.textContent='Copiar';copyBtn.classList.remove('is-done');},1600);
-      };
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
-      } else {
-        fallbackCopy(text, done);
-      }
-    });
+  const copyBtn = document.getElementById('copyVideoBtn');
+  copyBtn.addEventListener('click', ()=>{
+    const text = v.prompt;
+    const done = ()=>{
+      copyBtn.innerHTML = '<svg class="copybtn__check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'+ICONS.check+'</svg>Copiado!';
+      copyBtn.classList.add('is-done');
+      setTimeout(()=>{copyBtn.textContent='Copiar';copyBtn.classList.remove('is-done');},1600);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+    } else {
+      fallbackCopy(text, done);
+    }
   });
 
   els.overlay.hidden = false;
