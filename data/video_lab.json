@@ -1,0 +1,122 @@
+[
+  {
+    "id": "vl01",
+    "titulo": "Selfie no Espelho (pose biscoito)",
+    "tags": ["SELF", "MOVIMENTO", "MODA"],
+    "para_que_serve": "O formato que mais viraliza como prova de roupa no TikTok Shop: selfie silenciosa no espelho, um passo pra trás e mão na cintura. Funciona pra qualquer peça ou acessório.",
+    "prompt_flow": "VEO 3: Vertical 9:16 silent mirror selfie video, your AI model (fixed brand persona) wearing the outfit/product, takes one natural step back from the mirror while holding her phone, places her free hand on her waist in a confident pose with elbow out, slight head tilt, realistic handheld shake and a soft flash reflection in the mirror, mouth closed, no talking, authentic raw UGC feel.",
+    "prompt_create": "Silent 9:16 mirror selfie UGC video. FACIAL LOCK: Lips firmly sealed, closed-mouth smile, zero speech/mouth movement. CORE IDEA: Spontaneous smartphone mirror selfie. Takes one natural step back, placing free hand on waist in confident \"biscoito\" pose. CAMERA: Raw handheld, no AI stabilization, shaky framing, wrist jitters, realistic phone inertia reacting to the step, no gimbal. FLASH: Realistic iPhone flash flare in mirror, harsh white skin reflections, lens halos. KINETICS: Natural step weight, body inertia, acceleration curves. SEQUENCE: 1) Starts facing mirror holding phone. 2) Takes 1 step back; phone/hair lag with realistic inertia. 3) Places free hand on waist, elbow out. 4) Micro-stabilization, head tilt, confident gaze. PHYSICS: Weighted hair mass, dynamic clothing folds, visible skin texture. FORBIDDEN: Talking, lip-sync, mouth/jaw movement, robotic timing, stabilized camera, locked arm, spinning."
+  },
+  {
+    "id": "vl02",
+    "titulo": "Vídeo de Vendas UGC",
+    "tags": ["UGC", "SELF", "CTA"],
+    "para_que_serve": "Roteiro de vídeo de depoimento falado, no estilo usuário real contando que o produto mudou a vida dela — ótimo pra anúncio pago e TikTok.",
+    "prompt_flow": "VEO 3 prompt: Your AI model (fixed brand persona), in casual home clothes, sitting at her kitchen table, looking directly at camera, says excitedly: 'I can't believe how much this product changed my life! I've been using it for 3 weeks and the results are incredible.' Natural lighting, handheld camera feel, authentic user generated content style.",
+    "prompt_create": "Raw 9:16 handheld UGC testimonial video, spoken dialogue. DIALOGUE: Natural, excited home-style delivery: \"I can't believe how much this product changed my life! I've been using it for 3 weeks and the results are incredible.\" CORE IDEA: A woman sits casually at her kitchen table in home clothes, talking straight to camera about the product. CAMERA: Handheld phone framing, slight natural wobble, no gimbal, authentic UGC feel, eye-level angle. LIGHT: Soft natural daylight from a nearby window, warm and unfiltered. KINETICS: Natural head and hand gestures while speaking, believable breathing pauses. SEQUENCE: 1) Sits down, settles into frame. 2) Delivers line with genuine excitement, slight forward lean. 3) Small natural gesture (hand touching the product) on the key phrase. 4) Soft smile, holds gaze at the end. PHYSICS: Natural facial muscle movement, realistic blinking, fabric movement on shoulders. FORBIDDEN: Studio lighting, teleprompter cadence, robotic blinking, stabilized gimbal shot, overacting."
+  },
+  {
+    "id": "vl03",
+    "titulo": "Produto em Uso (unboxing)",
+    "tags": ["MOVIMENTO", "DINÂMICO"],
+    "para_que_serve": "Unboxing silencioso em close-up, só mãos e produto — formato satisfatório que funciona em qualquer nicho de produto físico.",
+    "prompt_flow": "VEO 3: Close-up shot of hands unboxing a premium skincare product, slow motion, satisfying reveal, soft natural light from window, marble surface, lifestyle feel, no talking, ambient background music implied, product packaging visible.",
+    "prompt_create": "Silent 9:16 close-up unboxing video. HAND LOCK: No face in frame, only hands interacting with the product. CORE IDEA: Slow, satisfying unboxing of a premium product on a marble surface. CAMERA: Static or very slow handheld drift, macro-close framing, shallow depth of field. LIGHT: Soft natural window light, gentle highlights on packaging. KINETICS: Slow-motion hand movement, deliberate and careful unwrapping pace. SEQUENCE: 1) Hands lift the box into frame. 2) Fingers slowly open the lid/seal. 3) Product slowly revealed and lifted out. 4) Hand gently rotates product to show detail. PHYSICS: Realistic packaging material behavior (cardboard flex, plastic crinkle), correct product weight in hand movement. FORBIDDEN: Talking, visible face, fast cuts, shaky handheld, artificial sound cues implied in motion."
+  },
+  {
+    "id": "vl04",
+    "titulo": "Depoimento / Testemunho",
+    "tags": ["UGC", "SELF"],
+    "para_que_serve": "Depoimento falado, sentado, estilo home office — passa autoridade e credibilidade pra produtos de renda extra ou infoprodutos.",
+    "prompt_flow": "VEO 3: Middle-aged man, professional look, sitting in home office with bookshelves behind, speaks to camera: 'I doubled my income in 60 days using this method. I was skeptical at first, but the results speak for themselves.' Steady shot, good lighting, believable.",
+    "prompt_create": "Raw 9:16 seated testimonial video, spoken dialogue. DIALOGUE: Calm, credible delivery: \"I doubled my income in 60 days using this method. I was skeptical at first, but the results speak for themselves.\" CORE IDEA: A middle-aged man sits in a home office with bookshelves behind him, speaking directly to camera. CAMERA: Static handheld or propped phone, steady medium shot, slight natural micro-movement. LIGHT: Soft indoor lighting, warm bookshelf background, no studio gloss. KINETICS: Measured hand gestures, natural pacing between sentences, confident but unscripted feel. SEQUENCE: 1) Settles into frame, brief pause. 2) Delivers first sentence with light skepticism in tone. 3) Shifts to confident tone on 'the results speak for themselves'. 4) Holds steady gaze, slight nod. PHYSICS: Natural facial micro-expressions, realistic breathing, fabric movement. FORBIDDEN: Teleprompter rhythm, perfect symmetry framing, studio lighting, overacted enthusiasm."
+  },
+  {
+    "id": "vl05",
+    "titulo": "TikTok Viral (montagem rápida)",
+    "tags": ["FORMATO VIRAL", "DINÂMICO"],
+    "para_que_serve": "Montagem rápida com hook nos primeiros 3 segundos — pensado pra travar o scroll e explodir visualizações.",
+    "prompt_flow": "VEO 3: Fast-paced montage video, trending music implied, text overlays with bold statements, person doing surprising transformation or reveal, Gen Z aesthetic, bright colors, quick cuts every 2 seconds, hook in first 3 seconds showing shocking result.",
+    "prompt_create": "Silent 9:16 fast-cut viral montage video. CORE IDEA: Quick-paced reveal/transformation montage built for maximum scroll-stopping power. CAMERA: Mixed handheld angles, quick whip-style transitions between shots, dynamic framing changes. LIGHT: Bright, punchy natural light, high contrast. KINETICS: Fast, energetic motion in every clip, sharp cuts every 1-2 seconds. SEQUENCE: 1) Immediate visual hook in the first frame (surprising result or bold visual). 2) Quick sequence of supporting shots building anticipation. 3) Final reveal shot, held slightly longer for impact. PHYSICS: Natural motion blur on fast movement, realistic impact/settle on each cut. FORBIDDEN: Slow pacing, static single-angle shot, talking-head narration, soft/low-contrast lighting."
+  },
+  {
+    "id": "vl06",
+    "titulo": "Anúncio Pago (antes/depois)",
+    "tags": ["CTA", "FORMATO VIRAL"],
+    "para_que_serve": "Anúncio em split screen clássico de antes/depois — direto ao ponto, ótimo pra tráfego pago e CTA no final.",
+    "prompt_flow": "VEO 3: Split screen video ad, left: your AI model (fixed brand persona) struggling with a problem (looking tired, stressed), right: the same AI model happy after using the product, upbeat transition in middle, text space at bottom for CTA, 15 seconds total duration, professional ad quality.",
+    "prompt_create": "Silent 9:16 split-screen before/after ad video. CORE IDEA: Left side shows the AI model (fixed brand persona) visibly tired and stressed; right side shows the same person happy and relieved after using the product. CAMERA: Static symmetrical framing on both sides, clean studio-adjacent composition. LIGHT: Left side slightly duller/cooler tone, right side brighter and warmer — subtle, not exaggerated. KINETICS: Subtle natural movement on both sides (breathing, small shifts), no exaggerated acting. SEQUENCE: 1) Both sides hold on the 'before' state briefly. 2) Quick transition wipe at the midpoint. 3) Both sides settle into the 'after' state, confident posture. 4) Brief hold for CTA text space at the bottom. PHYSICS: Natural weight shifts, realistic fabric and hair movement on both sides. FORBIDDEN: Talking, exaggerated facial expressions, mismatched lighting between sides, jump cuts within each side."
+  },
+  {
+    "id": "vl07",
+    "titulo": "Apresentação de Curso",
+    "tags": ["CTA"],
+    "para_que_serve": "Instrutor confiante apresentando um curso num estúdio moderno — bom gancho pra vender infoproduto ou mentoria.",
+    "prompt_flow": "VEO 3: Confident instructor standing in modern studio with screen behind showing course content, professional lighting, speaking directly to camera: 'In just 30 days, you will master this skill completely. Here is exactly what you will learn inside.' Engaging and authoritative.",
+    "prompt_create": "Raw 9:16 studio presenter video, spoken dialogue. DIALOGUE: Confident, authoritative delivery: \"In just 30 days, you will master this skill completely. Here is exactly what you will learn inside.\" CORE IDEA: An instructor stands in a modern studio setup with a content screen behind them, speaking directly to camera. CAMERA: Steady medium shot, slight handheld presence (not fully locked), eye-level framing. LIGHT: Clean, even studio-style lighting without looking artificial. KINETICS: Purposeful hand gestures pointing toward the screen, confident stance shifts. SEQUENCE: 1) Opens with direct eye contact and the hook line. 2) Gestures toward the screen behind while listing value. 3) Returns full attention to camera for the closing promise. PHYSICS: Natural posture sway, realistic clothing movement, believable hand-gesture timing. FORBIDDEN: Monotone delivery, robotic gesture loops, flat/shadowless lighting, static statue-like stance."
+  },
+  {
+    "id": "vl08",
+    "titulo": "Explicativo com IA",
+    "tags": ["DINÂMICO"],
+    "para_que_serve": "Vídeo explicativo limpo com ícones e passos visuais — ideal pra ensinar um processo em formato educativo e moderno.",
+    "prompt_flow": "VEO 3: Clean explainer video style, animated icons and text appearing on screen, friendly AI voice narration, step-by-step process visualization, blue and white color palette, modern tech feel, 60 seconds format, educational and engaging.",
+    "prompt_create": "Silent 9:16 clean explainer video, animated overlays implied. CORE IDEA: Step-by-step process visualization with minimal on-screen presence, icons and short text call-outs guiding the viewer. CAMERA: Steady top-down or flat-lay style framing for any physical elements shown. LIGHT: Bright, even, neutral lighting — blue-and-white clean tech palette. KINETICS: Smooth, deliberate reveals of each step, no rushed movement. SEQUENCE: 1) Opening frame establishes the topic simply. 2) Step 1 element enters frame. 3) Step 2 element enters, previous stays visible or fades cleanly. 4) Final frame consolidates the full process. PHYSICS: Natural object settle/placement physics if hands are shown, clean consistent lighting throughout. FORBIDDEN: Cluttered frame, inconsistent lighting between steps, chaotic fast cuts, visible face talking."
+  },
+  {
+    "id": "vl09",
+    "titulo": "Receita de Sucesso",
+    "tags": ["DINÂMICO", "CTA"],
+    "para_que_serve": "Pessoa real apresentando um método/fórmula com passos aparecendo na tela — passa credibilidade e energia motivacional.",
+    "prompt_flow": "VEO 3: Dynamic video showing a proven formula or method, text animations reveal each step, success metrics appearing as motion graphics, motivational music implied, modern infographic style with real person presenting, inspiring and credible.",
+    "prompt_create": "Silent 9:16 infographic-style video with real presenter. CORE IDEA: A real person presents a proven method/formula while motion-graphic style step reveals appear. CAMERA: Medium shot, steady with slight natural handheld presence. LIGHT: Bright, motivational, slightly warm tone. KINETICS: Confident, energetic but controlled gestures tied to each step reveal. SEQUENCE: 1) Presenter introduces the formula with an open gesture. 2) Step 1 highlighted with a corresponding hand motion. 3) Step 2 and 3 follow with building energy. 4) Closing confident stance, direct eye contact. PHYSICS: Natural gesture-to-step timing, realistic body weight shifts. FORBIDDEN: Flat delivery, static arms, mismatched timing between gesture and reveal, dull lighting."
+  },
+  {
+    "id": "vl10",
+    "titulo": "Short de YouTube",
+    "tags": ["FORMATO VIRAL", "CTA"],
+    "para_que_serve": "Formato curto com hook forte no primeiro segundo e CTA claro no final — pronto pra Shorts, Reels e TikTok.",
+    "prompt_flow": "VEO 3: Vertical 9:16 video, hook in first second with visual surprise or bold statement, educational reveal in middle, clear CTA at end 'Follow for more', clean background, captions implied, satisfying and informative, 45-60 seconds.",
+    "prompt_create": "Silent 9:16 short-form hook video. CORE IDEA: Strong visual or statement hook in the first second, educational reveal in the middle, clear CTA moment at the end. CAMERA: Dynamic handheld energy in the hook, steadier through the explanation, slight re-energize for the CTA. LIGHT: Clean, bright, consistent throughout. KINETICS: Sharp quick motion on the hook, calmer deliberate pacing mid-video, upbeat finish. SEQUENCE: 1) Immediate bold visual or on-screen text hook. 2) Clear, simple explanation beat. 3) Satisfying payoff moment. 4) Direct-to-camera CTA gesture ('follow for more'). PHYSICS: Natural motion blur on the hook, realistic settle on the final CTA frame. FORBIDDEN: Slow build-up at the start, buried hook, monotone pacing throughout, no clear ending beat."
+  },
+  {
+    "id": "vl11",
+    "titulo": "Review de Afiliado",
+    "tags": ["UGC", "SELF"],
+    "para_que_serve": "Review honesto de laptop/produto digital, estilo 'testei por 30 dias' — ótimo pra ofertas de afiliado.",
+    "prompt_flow": "VEO 3: Authentic review-style video, your AI model (fixed brand persona) using laptop showing product/software, honest and enthusiastic tone, showing benefits on screen, 'I tried this for 30 days' narrative, credible home office setting, trust-building style.",
+    "prompt_create": "Raw 9:16 honest review video, spoken dialogue. DIALOGUE: Genuine, slightly informal tone: \"I tried this for 30 days...\" building into real enthusiasm about results. CORE IDEA: The AI model (fixed brand persona) sits at a laptop in a credible home-office setting, showing the product/software on screen while talking. CAMERA: Handheld or propped phone, natural medium shot, slight movement when gesturing to the screen. LIGHT: Soft natural home-office light, believable and unpolished. KINETICS: Natural typing/scrolling gestures, genuine reactions while looking at the screen. SEQUENCE: 1) Opens mid-thought, laptop already open. 2) Gestures to the screen explaining a feature. 3) Delivers an honest, slightly skeptical-turned-positive line. 4) Closes with a direct, trust-building look to camera. PHYSICS: Natural hand-to-keyboard physics, realistic screen glow on face. FORBIDDEN: Scripted sales tone, studio lighting, stabilized gimbal shot, overacted excitement."
+  },
+  {
+    "id": "vl12",
+    "titulo": "Reels de Transformação",
+    "tags": ["FORMATO VIRAL", "DINÂMICO"],
+    "para_que_serve": "Reels emocional de transformação — começa na dificuldade, termina na conquista. Forte pra storytelling de antes/depois.",
+    "prompt_flow": "VEO 3: Emotional transformation Reels, starts with person in difficult situation (financial stress, weight problem, low confidence), fast forward montage of journey, ends with happy confident person having achieved their goal, inspirational music implied, text storytelling.",
+    "prompt_create": "Silent 9:16 emotional transformation montage. CORE IDEA: Starts in a visibly difficult moment (stress, low confidence), fast-forwards through a journey, ends on a confident, happy result. CAMERA: Lower energy, tighter framing in the 'before' section; opens up, brighter framing in the 'after' section. LIGHT: Dimmer, flatter light at the start; warm, bright light by the end. KINETICS: Slower, heavier body language at the start; light, confident movement by the end. SEQUENCE: 1) Opening frame shows visible struggle, closed-off posture. 2) Quick montage of journey beats. 3) Transition moment (turn, breath, reset). 4) Final frame — open posture, genuine smile, confident stance. PHYSICS: Natural posture shift from closed to open body language, realistic lighting transition. FORBIDDEN: Static unchanging posture throughout, no lighting shift, talking/narration, rushed ending."
+  },
+  {
+    "id": "vl13",
+    "titulo": "Pitch de Produto em 60s",
+    "tags": ["CTA", "DINÂMICO"],
+    "para_que_serve": "Pitch de vendas estruturado em 60 segundos: problema, solução, benefícios, prova social e CTA — tudo no ritmo certo.",
+    "prompt_flow": "VEO 3: 60-second product pitch video, confident presenter, problem stated in first 10 seconds, solution presented at 20 seconds, benefits listed at 35 seconds, social proof at 45 seconds, call to action in final 15 seconds. Fast paced, energetic, persuasive.",
+    "prompt_create": "Raw 9:16 fast-paced pitch video, spoken dialogue. DIALOGUE: Energetic, persuasive, structured delivery moving from problem to solution to proof to offer. CORE IDEA: A confident presenter delivers a tight 60-second product pitch directly to camera. CAMERA: Handheld energy throughout, slight re-framing at each structural beat (problem / solution / benefits / proof / CTA). LIGHT: Bright, energetic, consistent. KINETICS: Building physical energy through the pitch, stronger gestures as it approaches the CTA. SEQUENCE: 1) States the problem with an empathetic tone (0-10s). 2) Presents the solution with a confident shift (10-20s). 3) Lists benefits with counting gestures (20-35s). 4) Delivers social proof with a grounded tone (35-45s). 5) Closes with a direct, urgent CTA (45-60s). PHYSICS: Natural gesture-to-speech sync, realistic breathing between beats. FORBIDDEN: Flat monotone delivery, static stance throughout, no structural pacing change, robotic timing."
+  },
+  {
+    "id": "vl14",
+    "titulo": "Vídeo a partir de Imagem",
+    "tags": ["MOVIMENTO", "UGC"],
+    "para_que_serve": "Transforma uma foto de referência em vídeo realista, preservando identidade, produto e cenário — o gerador universal da sua biblioteca.",
+    "prompt_flow": "Create a highly realistic 9:16 vertical video using the provided frame as the visual reference. Preserve the identity, product, environment, lighting direction, and overall composition shown in the image, while allowing natural motion and continuity to bring the scene to life. VISUAL REALISM: Photorealistic skin with subtle texture, natural pores, soft highlights, and realistic shadows. Natural hair movement with fine strand detail and believable physics. Accurate fabric behavior and product materials with correct reflections and weight. CAMERA & MOTION: Apply gentle, human-like camera movement (slow push-in, slight parallax, or soft handheld stabilization), smooth and coherent. INFLUENCER BEHAVIOR: Relaxed posture, soft gestures, small head movements, natural blinking and micro-expressions, no exaggerated acting. PRODUCT INTERACTION: The product remains visually accurate at all times; realistic hand pressure, grip and movement if touched.",
+    "prompt_create": "Photoreal 9:16 image-to-video continuation. REFERENCE LOCK: Preserve identity, product, environment, lighting direction and composition exactly as shown in the input frame. CORE IDEA: Bring the still frame to life with natural, believable continuity motion — nothing invented beyond the reference. CAMERA: Gentle human-like movement only (slow push-in, slight parallax, soft handheld stabilization), intentional and calm, never random. SKIN & MATERIALS: Photorealistic skin with subtle pores and soft highlights, natural hair strand physics, accurate fabric weight and reflections. KINETICS: Relaxed posture, soft gestures, small head movements, natural blinking and micro-expressions. SEQUENCE: 1) Frame holds as reference is read. 2) Subtle natural motion begins (breath, blink, small shift). 3) Camera gently pushes in or drifts. 4) Product interaction, if any, follows realistic grip physics. FORBIDDEN: Identity drift, product distortion or scale change, exaggerated acting, artificial cinematic color grading, static frozen shot."
+  },
+  {
+    "id": "vl15",
+    "titulo": "POV sem rosto (primeira pessoa)",
+    "tags": ["POV", "SELF"],
+    "para_que_serve": "Vídeo em primeira pessoa, câmera = olhos do espectador, rosto nunca aparece — formato autêntico e barato de produzir.",
+    "prompt_flow": "Create a highly realistic 9:16 vertical POV video, as if recorded naturally by a real person using a phone. The camera represents the viewer's eyes (POV) at all times. Preserve product accuracy, environment, lighting direction, and scale, allowing only natural human motion. Natural handheld movement with subtle micro-shakes and breathing rhythm, small adjustments in framing like a real person repositioning hands. Real human hands visible when interacting with the product, intentional but casual movements. Calm, confident, slightly curious energy, small pauses and natural timing. POV only — never show the person's face. No acting, no ad feeling.",
+    "prompt_create": "Silent/optional-speech 9:16 first-person POV video. POV LOCK: Camera is the viewer's own eyes at all times, face never shown. CORE IDEA: A natural, unscripted first-person moment of picking up, testing or observing the product. CAMERA: Handheld POV with subtle micro-shakes and a breathing rhythm, small natural framing adjustments, no cinematic moves or artificial stabilization. LIGHT: Natural lighting with realistic shadows and reflections matching the real environment. KINETICS: Real hands interacting with the product, grip pressure and speed matched naturally to what it is. SEQUENCE: 1) POV settles on the product. 2) Hand enters frame, picks it up naturally. 3) Small testing/adjusting motion, brief pause. 4) Slight reposition as if about to set it down or continue using it. PHYSICS: Correct product weight and proportions in hand movement, natural skin and material texture. FORBIDDEN: Showing the person's face, choreographed gestures, cinematic angles, ad-like presentation energy, distortion of the product."
+  }
+]

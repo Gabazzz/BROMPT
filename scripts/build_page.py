@@ -2,6 +2,7 @@ import json, re, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 data = json.load(open(ROOT / 'data' / 'prompts.json', encoding='utf-8'))
+video_lab = json.load(open(ROOT / 'data' / 'video_lab.json', encoding='utf-8'))
 
 CAT_ICON = {
     'imagens': 'img',
@@ -28,6 +29,8 @@ json_data = json_data.replace('</', '<\\/')
 json_cats = json.dumps(cats, ensure_ascii=False)
 json_cats = json_cats.replace('</', '<\\/')
 json_icons = json.dumps(CAT_ICON, ensure_ascii=False)
+json_videolab = json.dumps(video_lab, ensure_ascii=False)
+json_videolab = json_videolab.replace('</', '<\\/')
 
 TEMPLATE = r'''<!doctype html>
 <html lang="pt-BR">
@@ -335,6 +338,66 @@ body::before{
 .ideashuffle svg{transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
 .ideashuffle.is-spinning svg{transform:rotate(180deg);}
 
+/* Lab de Vídeos view */
+.hero--compact{margin-bottom:22px;}
+.hero--compact .hero__title{max-width:none;}
+
+.vgrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:14px;
+}
+.vcard{
+  text-align:left;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-left:3px solid var(--line);
+  border-radius:3px 13px 3px 3px;
+  cursor:pointer;
+  font-family:inherit;color:inherit;
+  display:flex;flex-direction:column;
+  min-width:0;position:relative;overflow:hidden;
+  transition:border-color .18s ease, transform .18s ease;
+}
+.vcard:hover{border-color:var(--accent);transform:translateX(3px);}
+.vcard:active{transform:translateX(1px);}
+.vcard__thumb{
+  aspect-ratio:9/12;width:100%;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 55%),
+    var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.vcard__glyph{color:var(--accent);opacity:.9;}
+.vcard__badge{
+  position:absolute;top:10px;left:10px;
+  font-family:var(--font-mono);font-size:10px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:2px 6px;
+}
+.vcard__body{padding:14px 15px 15px;display:flex;flex-direction:column;gap:10px;flex:1;}
+.vcard__title{font-family:var(--font-display);font-weight:600;font-size:16px;line-height:1.25;margin:0;transition:color .18s ease;}
+.vcard:hover .vcard__title{color:var(--accent);}
+.vcard__tags{display:flex;flex-wrap:wrap;gap:6px;}
+.vcard__tag{
+  font-family:var(--font-body);font-size:10.5px;font-weight:600;letter-spacing:.02em;
+  color:var(--muted);background:var(--bg);border:1px solid var(--line);
+  border-radius:999px;padding:3px 9px;
+}
+.vcard__actions{display:flex;gap:8px;margin-top:auto;}
+.vbtn{
+  flex:1;min-width:0;
+  font-family:var(--font-body);font-size:12px;font-weight:600;
+  background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;
+  padding:9px 8px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:border-color .15s ease, transform .1s ease, background .15s ease, color .15s ease;
+}
+.vbtn:hover{border-color:var(--accent);color:var(--accent);}
+.vbtn:active{transform:scale(.96);}
+.vbtn.is-done{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);}
+
+.vpanel-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px;}
+
 /* overlay / detail panel */
 .overlay{
   position:fixed;inset:0;z-index:50;
@@ -416,8 +479,10 @@ body::before{
 /* entrance choreography — only for viewers who haven't asked for less motion */
 .motion-ok .reveal,
 .motion-ok .reveal-line{opacity:0;transform:translateY(14px);animation:revealUp .62s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(var(--d,0) * 70ms + 40ms);}
-.motion-ok .card{opacity:0;transform:translateY(10px);animation:cardIn .4s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(min(var(--i,0),16) * 26ms);}
-.motion-ok .card.is-pressed{animation:stampPress .22s cubic-bezier(.16,1,.3,1);}
+.motion-ok .card,
+.motion-ok .vcard{opacity:0;transform:translateY(10px);animation:cardIn .4s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(min(var(--i,0),16) * 26ms);}
+.motion-ok .card.is-pressed,
+.motion-ok .vcard.is-pressed{animation:stampPress .22s cubic-bezier(.16,1,.3,1);}
 .motion-ok .copybtn.is-done{animation:pop .32s ease;}
 .motion-ok .grain{animation:grainDrift 32s ease-in-out infinite;}
 @keyframes revealUp{to{opacity:1;transform:none;}}
@@ -436,6 +501,7 @@ body::before{
   .nav__item{flex:1;justify-content:center;}
   .panel{width:100%;}
   .grid{grid-template-columns:1fr 1fr;}
+  .vgrid{grid-template-columns:1fr 1fr;}
 }
 @media (max-width:640px){
   .shell{padding-inline:18px;padding-block:22px 52px;gap:18px;}
@@ -453,6 +519,9 @@ body::before{
   .card{padding:18px 18px 19px;}
   .card__title{font-size:18px;}
   .card__desc{font-size:14px;-webkit-line-clamp:3;}
+  .vgrid{grid-template-columns:1fr;gap:12px;}
+  .vcard__title{font-size:17px;}
+  .vcard__actions{flex-direction:column;}
   .panel{padding:24px 18px calc(36px + env(safe-area-inset-bottom,0px));}
   .panel__title{margin-bottom:18px;}
   .preview{padding:17px;}
@@ -485,6 +554,10 @@ body::before{
       <button class="nav__item" data-view="hoje" type="button">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path><circle cx="8.5" cy="14" r="1.3"></circle></svg>
         <span>Ideias de hoje</span>
+      </button>
+      <button class="nav__item" data-view="videolab" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2"></rect></svg>
+        <span>Lab de Vídeos</span>
       </button>
     </nav>
   </aside>
@@ -555,6 +628,25 @@ body::before{
 
       <div class="grid" id="ideaGrid"></div>
     </section>
+
+    <section id="view-videolab" hidden>
+      <header class="hero hero--compact">
+        <h1 class="hero__title">
+          <span class="reveal-line" style="--d:1">Lab de</span>
+          <span class="reveal-line reveal-accent" style="--d:2">Vídeos.</span>
+        </h1>
+        <p class="hero__sub reveal" style="--d:3">Uma galeria de estilos de vídeo pronta pra usar — cada card já vem com o prompt do Google Flow e o prompt do Create (Sora). Filtra por tag e copia direto.</p>
+      </header>
+
+      <div class="chips reveal" id="vtags" style="--d:4"></div>
+
+      <section class="results">
+        <div class="results__head reveal" style="--d:5">
+          <span class="results__count" id="vResultsCount"></span>
+        </div>
+        <div class="vgrid" id="vgrid"></div>
+      </section>
+    </section>
   </main>
 </div>
 
@@ -569,6 +661,7 @@ body::before{
 const MOTION_OK = document.documentElement.classList.contains('motion-ok');
 const PROMPTS = __PROMPTS__;
 const CATEGORIES = __CATEGORIES__;
+const VIDEO_LAB = __VIDEOLAB__;
 const ICONS = {
   img:'<path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>',
   play:'<circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z"/>',
@@ -581,9 +674,21 @@ const ICONS = {
   seed:'<path d="M12 22c4-1 8-5 8-11a8 8 0 0 0-8-8 8 8 0 0 0-8 8c0 6 4 10 8 11z"/><path d="M12 22V9"/>',
   compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
   arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
-  check:'<path d="M20 6L9 17l-5-5"/>'
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  mirror:'<rect x="6" y="2" width="12" height="20" rx="6"/><path d="M9 7h6M9 11h6"/>',
+  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  chat:'<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4A8.4 8.4 0 0 1 3 11.5a8.4 8.4 0 0 1 9-8.4 8.4 8.4 0 0 1 9 8.4z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/>',
+  motion:'<path d="M4 17l5-10 4 7 3-5 4 8"/>',
+  hanger:'<path d="M12 4a1.6 1.6 0 1 1 1.6 1.6M4 19l6.5-6a2 2 0 0 1 3 0L20 19"/><path d="M2 19h20"/>',
+  cta:'<path d="M6 3h12a1 1 0 0 1 1 1v16l-4-3-3 3-3-3-4 3V4a1 1 0 0 1 1-1z"/>',
+  film:'<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>'
 };
 const CAT_ICON = __ICONS__;
+const TAG_ICON = {
+  'CTA':'cta', 'DINÂMICO':'motion', 'FORMATO VIRAL':'bolt', 'MODA':'hanger',
+  'MODA MASCULINA':'hanger', 'MOVIMENTO':'motion', 'MOVIMENTO MASCULINO':'motion',
+  'POV':'eye', 'SELF':'mirror', 'UGC':'chat'
+};
 
 const SYN = {
   foto:'imagem', fotos:'imagem', imagens:'imagem', imagem:'imagem',
@@ -683,11 +788,18 @@ const els = {
   ideaGrid: document.getElementById('ideaGrid'),
   ideaShuffle: document.getElementById('ideaShuffle'),
   productInput: document.getElementById('productInput'),
+  vtags: document.getElementById('vtags'),
+  vgrid: document.getElementById('vgrid'),
+  vCount: document.getElementById('vResultsCount'),
 };
 
 function iconSvg(slug, size){
   size = size || 14;
   return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[CAT_ICON[slug]]||ICONS[slug]||'')+'</svg>';
+}
+function tagIconSvg(tag, size){
+  size = size || 14;
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[TAG_ICON[tag]]||ICONS.film||'')+'</svg>';
 }
 
 function pressCard(c, fn){
@@ -855,6 +967,120 @@ function closeDetail(){
   setTimeout(()=>{ els.overlay.hidden = true; document.body.style.overflow=''; }, 220);
 }
 
+/* ---- Lab de Vídeos ---- */
+const VIDEO_TAGS = ['CTA','DINÂMICO','FORMATO VIRAL','MODA','MODA MASCULINA','MOVIMENTO','MOVIMENTO MASCULINO','POV','SELF','UGC'];
+let activeVideoTag = null;
+
+function wireCopyBtn(btn, text, labelIdle){
+  labelIdle = labelIdle || btn.textContent;
+  btn.addEventListener('click', e=>{
+    e.stopPropagation();
+    const done = ()=>{
+      btn.textContent = 'Copiado!';
+      btn.classList.add('is-done');
+      setTimeout(()=>{ btn.textContent = labelIdle; btn.classList.remove('is-done'); }, 1500);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+    } else {
+      fallbackCopy(text, done);
+    }
+  });
+}
+
+function renderVideoTags(){
+  const counts = {};
+  VIDEO_LAB.forEach(v=>v.tags.forEach(t=>{counts[t]=(counts[t]||0)+1;}));
+  const present = VIDEO_TAGS.filter(t=>counts[t]);
+  els.vtags.innerHTML = present.map(t=>{
+    const active = activeVideoTag===t ? ' is-active':'';
+    return '<button class="chip'+active+'" data-tag="'+escapeHtml(t)+'">'+tagIconSvg(t)+'<span>'+t+'</span><span class="chip__count">'+counts[t]+'</span></button>';
+  }).join('');
+  els.vtags.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const tag = btn.getAttribute('data-tag');
+      activeVideoTag = activeVideoTag===tag ? null : tag;
+      renderVideoTags();
+      renderVideoGrid();
+    });
+  });
+}
+
+function vcardHtml(v, i){
+  const glyph = tagIconSvg(v.tags[0], 30);
+  return '<div class="vcard" data-id="'+v.id+'" style="--i:'+i+'">'+
+    '<div class="vcard__thumb"><span class="vcard__badge">Nº '+v.id+'</span><span class="vcard__glyph">'+glyph+'</span></div>'+
+    '<div class="vcard__body">'+
+      '<h3 class="vcard__title">'+escapeHtml(v.titulo)+'</h3>'+
+      '<div class="vcard__tags">'+v.tags.map(t=>'<span class="vcard__tag">'+escapeHtml(t)+'</span>').join('')+'</div>'+
+      '<div class="vcard__actions">'+
+        '<button class="vbtn" data-kind="flow" type="button">Prompt do Flow</button>'+
+        '<button class="vbtn" data-kind="create" type="button">Prompt do Create</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function renderVideoGrid(){
+  const list = activeVideoTag ? VIDEO_LAB.filter(v=>v.tags.includes(activeVideoTag)) : VIDEO_LAB;
+  els.vgrid.innerHTML = list.map(vcardHtml).join('');
+  els.vCount.textContent = activeVideoTag ? list.length+' '+(list.length===1?'vídeo encontrado':'vídeos encontrados') : 'Mostrando todos os '+list.length+' vídeos';
+  els.vgrid.querySelectorAll('.vcard').forEach(c=>{
+    const v = VIDEO_LAB.find(x=>x.id===c.getAttribute('data-id'));
+    c.addEventListener('click', e=>{
+      if(e.target.closest('.vbtn')) return;
+      pressCard(c, ()=>openVideoDetail(v.id));
+    });
+    c.querySelectorAll('.vbtn').forEach(btn=>{
+      const kind = btn.getAttribute('data-kind');
+      const text = kind==='flow' ? v.prompt_flow : v.prompt_create;
+      wireCopyBtn(btn, text, btn.textContent);
+    });
+  });
+}
+
+function openVideoDetail(id){
+  const v = VIDEO_LAB.find(x=>x.id===id);
+  if(!v) return;
+  els.panelContent.innerHTML =
+    '<p class="panel__eyebrow">'+iconSvg('play',13)+'<span>Lab de Vídeos</span></p>'+
+    '<h2 class="panel__title">'+escapeHtml(v.titulo)+'</h2>'+
+    '<div class="vpanel-tags">'+v.tags.map(t=>'<span class="vcard__tag">'+tagIconSvg(t,11)+' '+escapeHtml(t)+'</span>').join('')+'</div>'+
+    '<div class="section">'+
+      '<p class="section__label">Para que serve</p>'+
+      '<p class="section__text">'+escapeHtml(v.para_que_serve)+'</p>'+
+    '</div>'+
+    '<div class="section">'+
+      '<p class="section__label">Prompt do Flow (Google Flow / VEO 3)</p>'+
+      '<div class="promptbox"><pre>'+escapeHtml(v.prompt_flow)+'</pre><button class="copybtn" id="copyFlowBtn">Copiar</button></div>'+
+    '</div>'+
+    '<div class="section">'+
+      '<p class="section__label">Prompt do Create</p>'+
+      '<div class="promptbox"><pre>'+escapeHtml(v.prompt_create)+'</pre><button class="copybtn" id="copyCreateBtn">Copiar</button></div>'+
+    '</div>';
+
+  [['copyFlowBtn', v.prompt_flow], ['copyCreateBtn', v.prompt_create]].forEach(([btnId, text])=>{
+    const copyBtn = document.getElementById(btnId);
+    copyBtn.addEventListener('click', ()=>{
+      const done = ()=>{
+        copyBtn.innerHTML = '<svg class="copybtn__check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">'+ICONS.check+'</svg>Copiado!';
+        copyBtn.classList.add('is-done');
+        setTimeout(()=>{copyBtn.textContent='Copiar';copyBtn.classList.remove('is-done');},1600);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  els.overlay.hidden = false;
+  els.panel.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(()=>els.overlay.classList.add('is-open'));
+}
+
 els.input.addEventListener('input', ()=>{
   currentQuery = els.input.value;
   els.clear.hidden = currentQuery.length===0;
@@ -922,6 +1148,7 @@ function runCountUp(){
 const VIEWS = {
   catalogo: document.getElementById('view-catalogo'),
   hoje: document.getElementById('view-hoje'),
+  videolab: document.getElementById('view-videolab'),
 };
 const navIndicator = document.querySelector('.nav__indicator');
 function positionNavIndicator(){
@@ -1063,6 +1290,8 @@ els.ideaShuffle.addEventListener('click', ()=>{
 renderQuick();
 renderChips();
 renderGrid(PROMPTS);
+renderVideoTags();
+renderVideoGrid();
 runCountUp();
 initIdeas();
 setView(location.hash.slice(1) || 'catalogo');
@@ -1072,7 +1301,7 @@ requestAnimationFrame(()=>{ if(navIndicator) navIndicator.classList.remove('is-i
 </html>
 '''
 
-html = TEMPLATE.replace('__PROMPTS__', json_data).replace('__CATEGORIES__', json_cats).replace('__ICONS__', json_icons)
+html = TEMPLATE.replace('__PROMPTS__', json_data).replace('__CATEGORIES__', json_cats).replace('__ICONS__', json_icons).replace('__VIDEOLAB__', json_videolab)
 html = html.replace('__TOTAL__', str(len(data))).replace('__CATCOUNT__', str(len(cats)))
 
 with open(ROOT / 'index.html', 'w', encoding='utf-8') as f:
